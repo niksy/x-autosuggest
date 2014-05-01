@@ -1,0 +1,37 @@
+.kist-Autosuggest-results {
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	max-width:300px;
+	background:#fff;
+	border:1px solid #ccc; border-radius:4px;
+}
+.kist-Autosuggest-list {
+	margin:0; padding:5px;
+	list-style:none;
+}
+.kist-Autosuggest-item.is-selected {
+	background-color:#f00;
+}
+.kist-Autosuggest-toggler {
+	display:block;
+	width:100%;
+	border:none; border-top:1px solid #ddd;
+	font-size:12px;
+	text-align:left;
+	background:none;
+}
+.kist-Autosuggest-item.is-selected .kist-Autosuggest-toggler {
+	color:#fff;
+}
+.kist-Autosuggest-item:first-child .kist-Autosuggest-toggler {
+	border-top-width:0;
+}
+.kist-Autosuggest-group-title {
+	margin:0; padding:5px 10px;
+	font-size:14px;
+}
+.kist-Autosuggest-preloader {
+	position:absolute; left:0; top:0;
+	width:10px; height:10px;
+	background:green;
+	border-radius:100%;
+}

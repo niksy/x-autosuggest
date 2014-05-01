@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>select</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+	<link rel="stylesheet" href="../src/kist-autosuggest.css" />
+	<link rel="stylesheet" href="assets/style/style.css" />
+</head>
+<body>
+
+	<form action="/" method="get">
+		<input type="search" />
+		<button type="submit">Search</button>
+	</form>
+
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
+	<script src="../src/kist-autosuggest.js"></script>
+
+	<script>
+		$('input').autosuggest({
+			source: 'http://localhost:3000/search',
+			select: function ( item, data ) {
+				console.log(item);
+				console.log(data);
+			}
+		});
+	</script>
+
+</body>
+</html>
