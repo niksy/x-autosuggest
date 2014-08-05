@@ -32,7 +32,7 @@
 
 	var dom = {
 		common: {
-			document: $(document)
+			doc: $(document)
 		},
 		setup: function () {
 			this.dom                 = this.dom || {};
@@ -67,14 +67,23 @@
 			// Create results
 			this.dom.results = $('<div />');
 			this.dom.results
+				.attr({
+					'id': plugin.ns.css + plugin.classes.results + '-' + this.instance.id,
+					'role': 'listbox',
+					'aria-expanded': false
+				})
 				.addClass(this.options.classes.results)
 				.addClass(this.options.classes.isHidden)
 				.appendTo(this.dom.wrapper);
 
-			// Normalize input
+			// Enhance input
 			this.dom.el
 				.addClass(this.options.classes.input)
 				.attr({
+					'role': 'combobox',
+					'aria-autocomplete': 'list',
+					'aria-owns': plugin.ns.css + plugin.classes.results + '-' + this.instance.id,
+					'aria-activedescendant': '',
 					'autocomplete': 'off',
 					'autocorrect': 'off'
 				});
@@ -87,7 +96,7 @@
 
 			this.dom.el
 				.removeClass(this.options.classes.input)
-				.removeAttr('autocomplete autocorrect')
+				.removeAttr('role aria-autocomplete aria-owns aria-activedescendant autocomplete autocorrect')
 				.insertBefore(this.dom.wrapper);
 
 			this.dom.form
@@ -110,7 +119,7 @@
 			this.dom.wrapper
 				.on('click' + this.instance.ens, '.' + this.options.classes.toggler, $.proxy(pointerSelectItem, this));
 
-			dom.common.document
+			dom.common.doc
 				.on('click' + this.instance.ens, $.proxy(globalEventsHandler, this))
 				.on('keydown' + this.instance.ens, $.proxy(globalEventsHandler, this));
 
@@ -123,7 +132,7 @@
 
 		},
 		destroy: function () {
-			dom.common.document.off(this.instance.ens);
+			dom.common.doc.off(this.instance.ens);
 			this.dom.el.off(this.instance.ens);
 			this.dom.wrapper.off(this.instance.ens);
 			this.dom.form.off(this.instance.ens);
@@ -217,7 +226,7 @@
 	 *
 	 * @return {jQuery}
 	 */
-	function createItem ( data ) {
+	function createItem ( data, index ) {
 
 		data = normalizeItemData.call(this.options, data);
 
@@ -229,7 +238,9 @@
 		}
 
 		item = $('<li />', {
-			'class': this.options.classes.item
+			'id': plugin.ns.css + plugin.classes.item + '-' + this.instance.id + '-' + index,
+			'class': this.options.classes.item,
+			'role': 'option'
 		});
 
 		item
@@ -467,14 +478,22 @@
 				return;
 			}
 
-			this.dom.results.removeClass(this.options.classes.isHidden);
-			this.dom.form.addClass(this.options.classes.isOpened);
+			this.dom.results
+				.attr('aria-expanded', true)
+				.removeClass(this.options.classes.isHidden);
+
+			this.dom.form
+				.addClass(this.options.classes.isOpened);
 
 		},
 
 		hideResults: function () {
-			this.dom.results.addClass(this.options.classes.isHidden);
-			this.dom.form.removeClass(this.options.classes.isOpened);
+			this.dom.results
+				.attr('aria-expanded', false)
+				.addClass(this.options.classes.isHidden);
+
+			this.dom.form
+				.removeClass(this.options.classes.isOpened);
 		},
 
 		/**
@@ -548,7 +567,7 @@
 				}
 
 				// Pass element to list item creator
-				createItem.call(this, item );
+				createItem.call(this, item, index);
 
 			}, this ) );
 
@@ -617,6 +636,7 @@
 					this.dom.prevItem.removeClass(this.options.classes.isSelected);
 				}
 				this.dom.currentItem.addClass(this.options.classes.isSelected);
+				this.dom.el.attr('aria-activedescendant', this.dom.currentItem.attr('id'));
 			}
 
 			this.dom.prevItem = this.dom.currentItem;
