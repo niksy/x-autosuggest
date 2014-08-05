@@ -373,7 +373,7 @@
 			case key.up:
 			case key.down:
 				// If list is closed when pressing up/down button, open it
-				if ( this.dom.results.hasClass(this.options.classes.isHidden) ){
+				if ( this.dom.results.hasClass(this.options.classes.isHidden) ) {
 					this.showResults();
 				}
 				this.navigate( keycode === key.down ? 'down' : 'up' );
@@ -589,7 +589,7 @@
 			newSelectableItem = newSelectableItem.length ? newSelectableItem : selectableItems.filter('.' + this.options.classes.isSelected);
 
 			// If we’ve already interacted with the list items…
-			if ( newSelectableItem.length !== 0 ){
+			if ( newSelectableItem.length !== 0 ) {
 
 				newSelectableItem = selectableItems.eq(direction == 'down' ? ++this.position: --this.position);
 
@@ -597,7 +597,7 @@
 				if (
 					this.position >= selectableItems.length ||
 					this.position < 0
-				){
+				) {
 					if ( this.position >= selectableItems.length ) {
 						this.position = 0;
 					} else if ( this.position < 0 ) {
@@ -682,7 +682,7 @@
 			// If we can get data array from the cached results object,
 			// we don’t need to call the server for new data,
 			// because we can use our cached data array
-			if ( this.cacheDataExists(query) ){
+			if ( this.cacheDataExists(query) ) {
 				this.showData(this.getCacheData(query));
 				return;
 			}
@@ -779,7 +779,7 @@
 	$.kist = $.kist || {};
 
 	$.kist[plugin.name] = {
-		defaults: Autosuggest.prototype.defaults,
+		defaults: Autosuggest.prototype.defaults
 	};
 
 	$.fn[plugin.name] = function ( options ) {

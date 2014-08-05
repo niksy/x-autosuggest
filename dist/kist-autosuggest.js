@@ -13,18 +13,18 @@
 		}
 	};
 	plugin.classes = {
-		wrapper: plugin.ns.css,
-		results: plugin.ns.css + '-results',
-		input: plugin.ns.css + '-input',
-		form: plugin.ns.css + '-form',
-		list: plugin.ns.css + '-list',
-		item: plugin.ns.css + '-item',
-		toggler: plugin.ns.css + '-toggler',
-		value: plugin.ns.css + '-value',
-		match: plugin.ns.css + '-match',
-		preloader: plugin.ns.css + '-preloader',
-		group: plugin.ns.css + '-group',
-		groupTitle: plugin.ns.css + '-group-title',
+		wrapper: '',
+		results: '-results',
+		input: '-input',
+		form: '-form',
+		list: '-list',
+		item: '-item',
+		toggler: '-toggler',
+		value: '-value',
+		match: '-match',
+		preloader: '-preloader',
+		group: '-group',
+		groupTitle: '-group-title',
 		isHidden: 'is-hidden',
 		isSelected: 'is-selected',
 		isOpened: 'is-opened'
@@ -33,26 +33,27 @@
 
 	var dom = {
 		common: {
-			document: $(document)
+			doc: $(document)
 		},
 		setup: function () {
 			this.dom                 = this.dom || {};
 			this.dom.el              = $(this.element);
 			this.dom.form            = this.dom.el.closest('form');
+			this.dom.form            = this.dom.form.length ? this.dom.form : $();
 		},
 		setupWrapper: function () {
 
 			this.dom.wrapper = $('<div />', {
-				'class': plugin.classes.wrapper
+				'class': this.options.classes.wrapper
 			});
 			this.dom.preloader = $('<div />');
 			this.dom.preloader
-				.addClass(plugin.classes.preloader)
-				.addClass(plugin.classes.isHidden);
+				.addClass(this.options.classes.preloader)
+				.addClass(this.options.classes.isHidden);
 
 			this.dom.wrapper
 				.insertBefore(this.dom.el)
-				.append( this.dom.el, this.dom.preloader );
+				.append(this.dom.el, this.dom.preloader);
 
 		},
 		setupAfter: function () {
@@ -67,32 +68,41 @@
 			// Create results
 			this.dom.results = $('<div />');
 			this.dom.results
-				.addClass(plugin.classes.results)
-				.addClass(plugin.classes.isHidden)
+				.attr({
+					'id': plugin.ns.css + plugin.classes.results + '-' + this.instance.id,
+					'role': 'listbox',
+					'aria-expanded': false
+				})
+				.addClass(this.options.classes.results)
+				.addClass(this.options.classes.isHidden)
 				.appendTo(this.dom.wrapper);
 
-			// Normalize input
+			// Enhance input
 			this.dom.el
-				.addClass(plugin.classes.input)
+				.addClass(this.options.classes.input)
 				.attr({
+					'role': 'combobox',
+					'aria-autocomplete': 'list',
+					'aria-owns': plugin.ns.css + plugin.classes.results + '-' + this.instance.id,
+					'aria-activedescendant': '',
 					'autocomplete': 'off',
 					'autocorrect': 'off'
 				});
 
 			this.dom.form
-				.addClass(plugin.classes.form);
+				.addClass(this.options.classes.form);
 
 		},
 		destroy: function () {
 
 			this.dom.el
-				.removeClass(plugin.classes.input)
-				.removeAttr('autocomplete autocorrect')
+				.removeClass(this.options.classes.input)
+				.removeAttr('role aria-autocomplete aria-owns aria-activedescendant autocomplete autocorrect')
 				.insertBefore(this.dom.wrapper);
 
 			this.dom.form
-				.removeClass(plugin.classes.form)
-				.removeClass(plugin.classes.isOpened);
+				.removeClass(this.options.classes.form)
+				.removeClass(this.options.classes.isOpened);
 
 			this.dom.wrapper.remove();
 
@@ -108,9 +118,9 @@
 				.on('focus' + this.instance.ens, $.proxy(this.showResults, this));
 
 			this.dom.wrapper
-				.on('click' + this.instance.ens, '.' + plugin.classes.toggler, $.proxy(pointerSelectitem, this));
+				.on('click' + this.instance.ens, '.' + this.options.classes.toggler, $.proxy(pointerSelectItem, this));
 
-			dom.common.document
+			dom.common.doc
 				.on('click' + this.instance.ens, $.proxy(globalEventsHandler, this))
 				.on('keydown' + this.instance.ens, $.proxy(globalEventsHandler, this));
 
@@ -123,7 +133,7 @@
 
 		},
 		destroy: function () {
-			dom.common.document.off(this.instance.ens);
+			dom.common.doc.off(this.instance.ens);
 			this.dom.el.off(this.instance.ens);
 			this.dom.wrapper.off(this.instance.ens);
 			this.dom.form.off(this.instance.ens);
@@ -157,21 +167,32 @@
 	/**
 	 * @this {Autosuggest}
 	 *
-	 * @param {String|Object} options
-	 *
-	 * @return {Object}
+	 * @param {Object} options
 	 */
-	function normalizeOptions ( options ) {
+	function constructOptions ( options ) {
 
-		options = options || {};
-
-		switch ( $.type(options.source) ) {
-			case 'string':
-				options.source = $.extend({}, this.defaults.source, { url: options.source });
-				break;
+		// Prepare URL
+		if ( $.type(this.options.source) === 'string' ) {
+			this.options.source = $.extend({}, this.defaults.source, { url: this.options.source });
 		}
 
-		return options;
+		// Prepare CSS classes
+		this.options.classes = {};
+		$.each(plugin.classes, $.proxy(function ( name, value ) {
+
+			var ns        = $.trim(this.options.namespace);
+			var pluginNs  = plugin.ns.css;
+			var className = pluginNs + value;
+
+			if ( /^is[A-Z]/.test(name) ) {
+				className = value;
+			} else if ( ns !== pluginNs && ns !== '' ) {
+				className = pluginNs + value + ' ' + ns + value;
+			}
+
+			this.options.classes[name] = className;
+
+		}, this));
 
 	}
 
@@ -196,7 +217,7 @@
 	 * @return {String}
 	 */
 	function highlightMatch ( query, textValue ) {
-		return textValue ? textValue.replace((new RegExp(query, 'i')), '<mark class="' + plugin.classes.match + '">$&</mark>') : '';
+		return textValue ? textValue.replace((new RegExp(query, 'i')), '<mark class="' + this.options.classes.match + '">$&</mark>') : '';
 	}
 
 	/**
@@ -206,7 +227,7 @@
 	 *
 	 * @return {jQuery}
 	 */
-	function createItem ( data ) {
+	function createItem ( data, index ) {
 
 		data = normalizeItemData.call(this.options, data);
 
@@ -218,18 +239,20 @@
 		}
 
 		item = $('<li />', {
-			'class': plugin.classes.item
+			'id': plugin.ns.css + plugin.classes.item + '-' + this.instance.id + '-' + index,
+			'class': this.options.classes.item,
+			'role': 'option'
 		});
 
 		item
 			.data(plugin.ns.dom + '-data', data)
-			.append($(this.options.templates.item.call(null, data)))
+			.append($(this.options.templates.item.call(this.element, data)))
 			.find(this.options.selectors.toggler)
-			.addClass(plugin.classes.toggler);
+			.addClass(this.options.classes.toggler);
 
 		item
 			.find(this.options.selectors.value)
-			.addClass(plugin.classes.value)
+			.addClass(this.options.classes.value)
 			.html(match);
 
 		/**
@@ -351,16 +374,15 @@
 			case key.up:
 			case key.down:
 				// If list is closed when pressing up/down button, open it
-				if ( this.dom.results.hasClass(plugin.classes.isHidden) ){
+				if ( this.dom.results.hasClass(this.options.classes.isHidden) ) {
 					this.showResults();
 				}
-
 				this.navigate( keycode === key.down ? 'down' : 'up' );
 				break;
 
 			// "Enter" key is pressed on selected item
 			case key.enter:
-				this.options.select.call(null, this.getCurrentItem(), this.getCurrentItem().data(plugin.ns.dom + '-data'));
+				itemSelected.call(this);
 				break;
 		}
 
@@ -371,16 +393,14 @@
 	 *
 	 * @param {Object} e
 	 */
-	function pointerSelectitem ( e ) {
+	function pointerSelectItem ( e ) {
 
-		var newSelectableItem = $(e.target).closest('.' + plugin.classes.item);
+		var newSelectableItem = $(e.target).closest('.' + this.options.classes.item);
 
 		this.setCurrentItem(newSelectableItem);
 		this.setInputVal(newSelectableItem.find(this.options.selectors.value).text());
 
-		this.hideResults();
-
-		this.options.select.call(null, this.getCurrentItem(), this.getCurrentItem().data(plugin.ns.dom + '-data'));
+		itemSelected.call(this);
 
 		if ( !this.options.preventSubmit ) {
 			this.dom.form.trigger('submit');
@@ -389,29 +409,35 @@
 	}
 
 	/**
+	 * @this {Autosuggest}
+	 */
+	function itemSelected () {
+		this.options.select.call(this.element, this.getCurrentItem(), this.getCurrentItem().data(plugin.ns.dom + '-data'));
+		this.hideResults();
+	}
+
+	/**
 	 * @class
 	 *
 	 * @param {Element} element
-	 * @param {String|Object} options
+	 * @param {Object} options
 	 */
 	function Autosuggest ( element, options ) {
 
 		this.element = element;
-		this.options = $.extend(true, {}, this.defaults, normalizeOptions.call(this, options));
+		this.options = $.extend(true, {}, this.defaults, options);
+
+		constructOptions.call(this, options);
 
 		instance.setup.call(this);
 		dom.setup.call(this);
 		dom.setupWrapper.call(this);
-		events.setup.call(this);
 		dom.setupAfter.call(this);
+		events.setup.call(this);
 
 	}
 
 	$.extend(Autosuggest.prototype, {
-
-		cache: {},
-		inputVal: '',
-		position: 0,
 
 		/**
 		 * @param {Array} data
@@ -453,14 +479,22 @@
 				return;
 			}
 
-			this.dom.results.removeClass(plugin.classes.isHidden);
-			this.dom.form.addClass(plugin.classes.isOpened);
+			this.dom.results
+				.attr('aria-expanded', true)
+				.removeClass(this.options.classes.isHidden);
+
+			this.dom.form
+				.addClass(this.options.classes.isOpened);
 
 		},
 
 		hideResults: function () {
-			this.dom.results.addClass(plugin.classes.isHidden);
-			this.dom.form.removeClass(plugin.classes.isOpened);
+			this.dom.results
+				.attr('aria-expanded', false)
+				.addClass(this.options.classes.isHidden);
+
+			this.dom.form
+				.removeClass(this.options.classes.isOpened);
 		},
 
 		/**
@@ -475,15 +509,15 @@
 
 			$.each( data, $.proxy(function ( key, group ) {
 
-				groupItem = $('<div />',{ 'class': plugin.classes.group });
+				groupItem = $('<div />',{ 'class': this.options.classes.group });
 
 				groupItem
 					.append(
-						$(this.options.templates.groupTitle.call(null, group)),
-						this.createList( group[this.options.map.groupItems] )
+						$(this.options.templates.groupTitle.call(this.element, group)),
+						this.createList(group[this.options.map.groupItems])
 					)
 					.find(this.options.selectors.groupTitle)
-					.addClass(plugin.classes.groupTitle );
+					.addClass(this.options.classes.groupTitle );
 
 				groupsItem = groupsItem.add(groupItem);
 
@@ -502,7 +536,7 @@
 
 			// Create list
 			var list = $('<ul />', {
-				'class': plugin.classes.list
+				'class': this.options.classes.list
 			});
 
 			// Create list items
@@ -534,7 +568,7 @@
 				}
 
 				// Pass element to list item creator
-				createItem.call(this, item );
+				createItem.call(this, item, index);
 
 			}, this ) );
 
@@ -553,10 +587,10 @@
 				return;
 			}
 
-			newSelectableItem = newSelectableItem.length ? newSelectableItem : selectableItems.filter('.' + plugin.classes.isSelected);
+			newSelectableItem = newSelectableItem.length ? newSelectableItem : selectableItems.filter('.' + this.options.classes.isSelected);
 
 			// If we’ve already interacted with the list items…
-			if ( newSelectableItem.length !== 0 ){
+			if ( newSelectableItem.length !== 0 ) {
 
 				newSelectableItem = selectableItems.eq(direction == 'down' ? ++this.position: --this.position);
 
@@ -564,7 +598,7 @@
 				if (
 					this.position >= selectableItems.length ||
 					this.position < 0
-				){
+				) {
 					if ( this.position >= selectableItems.length ) {
 						this.position = 0;
 					} else if ( this.position < 0 ) {
@@ -600,9 +634,10 @@
 
 			if ( item.length !== 0 ) {
 				if ( this.dom.prevItem ) {
-					this.dom.prevItem.removeClass(plugin.classes.isSelected);
+					this.dom.prevItem.removeClass(this.options.classes.isSelected);
 				}
-				this.dom.currentItem.addClass(plugin.classes.isSelected);
+				this.dom.currentItem.addClass(this.options.classes.isSelected);
+				this.dom.el.attr('aria-activedescendant', this.dom.currentItem.attr('id'));
 			}
 
 			this.dom.prevItem = this.dom.currentItem;
@@ -625,7 +660,7 @@
 		 * @param {Boolean} preventDomUpdate
 		 */
 		setInputVal: function ( value, preventDomUpdate ) {
-			this.inputVal = value;
+			this.val = value;
 			if ( !preventDomUpdate ) {
 				this.dom.el.val(value);
 			}
@@ -635,7 +670,7 @@
 		 * @return {String}
 		 */
 		getInputVal: function () {
-			return this.inputVal;
+			return this.val;
 		},
 
 		/**
@@ -648,7 +683,7 @@
 			// If we can get data array from the cached results object,
 			// we don’t need to call the server for new data,
 			// because we can use our cached data array
-			if ( this.cacheDataExists(query) ){
+			if ( this.cacheDataExists(query) ) {
 				this.showData(this.getCacheData(query));
 				return;
 			}
@@ -656,7 +691,7 @@
 			// Create additional data for sending to server (e.g. custom query key)
 			jsonData[this.options.map.query] = query;
 
-			this.dom.preloader.removeClass(plugin.classes.isHidden);
+			this.dom.preloader.removeClass(this.options.classes.isHidden);
 
 			$.ajax($.extend(true, {}, this.options.source, { data: jsonData })).done($.proxy(this.showData, this));
 
@@ -667,18 +702,18 @@
 		 */
 		showData: function ( data ) {
 
-			this.dom.preloader.addClass(plugin.classes.isHidden);
+			this.dom.preloader.addClass(this.options.classes.isHidden);
 
 			if ( !data || ( data && !data.length ) ) {
 				this.hideResults();
 				return;
 			}
 
-			this.setCacheData( data );
+			this.setCacheData(data);
 			this.cleanup();
 
 			this[ this.options.response == 'simple' ? 'createList' : 'createGroup' ]( data )
-				.appendTo( this.dom.results );
+				.appendTo(this.dom.results);
 
 			this.showResults();
 
@@ -696,6 +731,10 @@
 			events.destroy.call(this);
 			instance.destroy.call(this);
 		},
+
+		cache: {},
+		val: '',
+		position: 0,
 
 		defaults: {
 			source: {
@@ -732,7 +771,8 @@
 					return '<h2>' + data.group + ' </h2>';
 				}
 			},
-			select: function () {}
+			select: function () {},
+			namespace: plugin.ns.css
 		}
 
 	});
@@ -740,7 +780,7 @@
 	$.kist = $.kist || {};
 
 	$.kist[plugin.name] = {
-		defaults: Autosuggest.prototype.defaults,
+		defaults: Autosuggest.prototype.defaults
 	};
 
 	$.fn[plugin.name] = function ( options ) {
@@ -754,9 +794,11 @@
 			});
 		}
 
+		options = typeof(options) === 'object' ? options : {};
+
 		return this.each(function () {
 			if (!$.data(this, plugin.name)) {
-				$.data(this, plugin.name, new Autosuggest( this, options ));
+				$.data(this, plugin.name, new Autosuggest(this, options));
 			}
 		});
 	};
