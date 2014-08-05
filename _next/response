@@ -1,0 +1,20 @@
+// else if ( this.settings.response == 'html' ) {
+
+// 	$(data)
+// 		.appendTo( this.domRefs.resultsEl );
+
+// }
+
+// if ( options.response == 'html' ) {
+// 	options.source.dataType = 'html';
+// }
+
+if (
+	this.settings.response == 'simple' ||
+	this.settings.response == 'group'
+) {
+
+	this[ this.settings.response == 'simple' ? 'createList' : 'createGroup' ]( data )
+		.appendTo( this.domRefs.resultsEl );
+
+}
