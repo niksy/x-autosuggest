@@ -15,7 +15,8 @@ module.exports = function ( grunt ) {
 					banner: '<%= meta.banner %>'
 				},
 				files: {
-					'dist/kist-autosuggest.js': ['src/kist-autosuggest.js']
+					'dist/kist-autosuggest.js': ['src/kist-autosuggest.js'],
+					'dist/kist-autosuggest.css': ['src/kist-autosuggest.css']
 				}
 			}
 		},
@@ -38,6 +39,19 @@ module.exports = function ( grunt ) {
 				},
 				files: {
 					'dist/kist-autosuggest.min.css': ['src/kist-autosuggest.css']
+				}
+			}
+		},
+
+		copy: {
+			css: {
+				options: {
+					process: function ( content, srcpath ) {
+						return content.replace(/\*\/\n/g,'*/');
+					}
+				},
+				files: {
+					'dist/kist-autosuggest.min.css': ['dist/kist-autosuggest.min.css']
 				}
 			}
 		},
@@ -87,10 +101,11 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-bump');
 
 	grunt.registerTask('stylecheck', ['jshint:main', 'jscs:main']);
-	grunt.registerTask('default', ['stylecheck', 'concat', 'uglify', 'cssmin']);
+	grunt.registerTask('default', ['stylecheck', 'concat', 'uglify', 'cssmin', 'copy:css']);
 	grunt.registerTask('releasePatch', ['bump-only:patch', 'default', 'bump-commit']);
 	grunt.registerTask('releaseMinor', ['bump-only:minor', 'default', 'bump-commit']);
 	grunt.registerTask('releaseMajor', ['bump-only:major', 'default', 'bump-commit']);
