@@ -91,6 +91,8 @@
 			this.dom.form
 				.addClass(this.options.classes.form);
 
+			this.options.create.call(this.element);
+
 		},
 		destroy: function () {
 
@@ -771,6 +773,7 @@
 				}
 			},
 			select: function () {},
+			create: function () {},
 			namespace: plugin.ns.css
 		}
 

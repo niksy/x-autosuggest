@@ -75,6 +75,13 @@ Arguments: [Current item], [Current item data]
 
 Callback to run on item select.
 
+###### create
+
+Type: `Function`  
+Arguments: 
+
+Callback to run on autosuggest creation (when DOM elements are ready).
+
 ###### map
 
 Type: `Object`
