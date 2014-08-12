@@ -401,7 +401,7 @@
 	 */
 	function pointerSelectItem ( e ) {
 
-		var newSelectableItem = $(e.target).closest('.' + this.options.classes.item);
+		var newSelectableItem = $(e.target).closest('.' + this.options.classesNs.item);
 
 		this.setCurrentItem(newSelectableItem);
 		this.setInputVal(newSelectableItem.find(this.options.selectors.value).text());
