@@ -24,9 +24,9 @@
 		preloader: '-preloader',
 		group: '-group',
 		groupTitle: '-group-title',
-		isHidden: 'is-hidden',
 		isSelected: 'is-selected',
-		isOpened: 'is-opened'
+		isOpened: 'is-opened',
+		isActive: 'is-active'
 	};
 	plugin.publicMethods = ['destroy'];
 
@@ -48,7 +48,7 @@
 			this.dom.preloader = $('<div />');
 			this.dom.preloader
 				.addClass(this.options.classes.preloader)
-				.addClass(this.options.classes.isHidden);
+				.removeClass(this.options.classes.isActive);
 
 			this.dom.wrapper
 				.insertBefore(this.dom.el)
@@ -73,7 +73,7 @@
 					'aria-expanded': false
 				})
 				.addClass(this.options.classes.results)
-				.addClass(this.options.classes.isHidden)
+				.removeClass(this.options.classes.isOpened)
 				.appendTo(this.dom.wrapper);
 
 			// Enhance input
@@ -373,7 +373,7 @@
 			case key.up:
 			case key.down:
 				// If list is closed when pressing up/down button, open it
-				if ( this.dom.results.hasClass(this.options.classes.isHidden) ) {
+				if ( !this.dom.results.hasClass(this.options.classes.isOpened) ) {
 					this.showResults();
 				}
 				this.navigate( keycode === key.down ? 'down' : 'up' );
@@ -480,7 +480,7 @@
 
 			this.dom.results
 				.attr('aria-expanded', true)
-				.removeClass(this.options.classes.isHidden);
+				.addClass(this.options.classes.isOpened);
 
 			this.dom.form
 				.addClass(this.options.classes.isOpened);
@@ -490,7 +490,7 @@
 		hideResults: function () {
 			this.dom.results
 				.attr('aria-expanded', false)
-				.addClass(this.options.classes.isHidden);
+				.removeClass(this.options.classes.isOpened);
 
 			this.dom.form
 				.removeClass(this.options.classes.isOpened);
@@ -690,7 +690,7 @@
 			// Create additional data for sending to server (e.g. custom query key)
 			jsonData[this.options.map.query] = query;
 
-			this.dom.preloader.removeClass(this.options.classes.isHidden);
+			this.dom.preloader.addClass(this.options.classes.isActive);
 
 			$.ajax($.extend(true, {}, this.options.source, { data: jsonData })).done($.proxy(this.showData, this));
 
@@ -701,7 +701,7 @@
 		 */
 		showData: function ( data ) {
 
-			this.dom.preloader.addClass(this.options.classes.isHidden);
+			this.dom.preloader.removeClass(this.options.classes.isActive);
 
 			if ( !data || ( data && !data.length ) ) {
 				this.hideResults();

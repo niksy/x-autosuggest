@@ -1,10 +1,14 @@
+.kist-Autosuggest-results,
+.kist-Autosuggest-preloader {
+	display:none;
+}
+.kist-Autosuggest-results.is-opened,
+.kist-Autosuggest-preloader.is-active {
+	display:block;
+}
 .kist-Autosuggest {
 	position:relative;
 }
 .kist-Autosuggest-results {
 	position:absolute; left:0; right:0; top:100%; z-index:1000;
-}
-.kist-Autosuggest .is-hidden {
-	display:none;
-	visibility:hidden;
 }
