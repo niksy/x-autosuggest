@@ -1,4 +1,4 @@
-/*! kist-autosuggest 0.1.5 - Simple autosuggest plugin. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-autosuggest 0.1.6 - Simple autosuggest plugin. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -402,7 +402,7 @@
 	 */
 	function pointerSelectItem ( e ) {
 
-		var newSelectableItem = $(e.target).closest('.' + this.options.classes.item);
+		var newSelectableItem = $(e.target).closest('.' + this.options.classesNs.item);
 
 		this.setCurrentItem(newSelectableItem);
 		this.setInputVal(newSelectableItem.find(this.options.selectors.value).text());
