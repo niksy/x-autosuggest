@@ -1,4 +1,4 @@
-/*! kist-autosuggest 0.1.3 - Simple autosuggest plugin. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-autosuggest 0.1.4 - Simple autosuggest plugin. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -91,6 +91,8 @@
 
 			this.dom.form
 				.addClass(this.options.classes.form);
+
+			this.options.create.call(this.element);
 
 		},
 		destroy: function () {
@@ -772,6 +774,7 @@
 				}
 			},
 			select: function () {},
+			create: function () {},
 			namespace: plugin.ns.css
 		}
 
