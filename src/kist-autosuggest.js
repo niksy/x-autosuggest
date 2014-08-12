@@ -119,7 +119,7 @@
 				.on('focus' + this.instance.ens, $.proxy(this.showResults, this));
 
 			this.dom.wrapper
-				.on('click' + this.instance.ens, '.' + this.options.classes.toggler, $.proxy(pointerSelectItem, this));
+				.on('click' + this.instance.ens, '.' + this.options.classesNs.toggler, $.proxy(pointerSelectItem, this));
 
 			dom.common.doc
 				.on('click' + this.instance.ens, $.proxy(globalEventsHandler, this))
@@ -179,18 +179,23 @@
 
 		// Prepare CSS classes
 		this.options.classes = {};
+		this.options.classesNs = {};
+
 		$.each(plugin.classes, $.proxy(function ( name, value ) {
 
 			var ns        = $.trim(this.options.namespace);
 			var pluginNs  = plugin.ns.css;
 			var className = pluginNs + value;
+			var classNameNs = className;
 
 			if ( /^is[A-Z]/.test(name) ) {
-				className = value;
+				className = classNameNs = value;
 			} else if ( ns !== pluginNs && ns !== '' ) {
-				className = pluginNs + value + ' ' + ns + value;
+				classNameNs = ns + value;
+				className = pluginNs + value + ' ' + classNameNs;
 			}
 
+			this.options.classesNs[name] = classNameNs;
 			this.options.classes[name] = className;
 
 		}, this));
