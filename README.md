@@ -28,7 +28,7 @@ URL on which autosuggest will send data.
 
 If defined as string, it should be full URL, and if defined as object, properties are the same as the ones used for standard [`$.ajax`](http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings) request.
 
-###### response
+###### responseType
 
 Type: `String`  
 Default: `simple`
@@ -110,6 +110,55 @@ Type: `Function`
 Arguments: [Input element]
 
 Callback to run on autosuggest creation (when DOM elements are ready).
+
+###### open
+
+Type: `Function`  
+Arguments: [Input element]
+
+Callback to run when results list is opened.
+
+###### close
+
+Type: `Function`  
+Arguments: [Input element]
+
+Callback to run when results list is closed.
+
+###### focus
+
+Type: `Function`  
+Arguments: [Input element]
+
+Callback to run when input element is focused.
+
+###### blur
+
+Type: `Function`  
+Arguments: [Input element]
+
+Callback to run when input element is blurred.
+
+###### search
+
+Type: `Function`  
+Arguments: [Search query]
+
+Callback to run when search is performed, before actual request is sent.
+
+###### response
+
+Type: `Function`  
+Arguments: [Response data]
+
+Callback to run after search is performed, after receiving data.
+
+###### move
+
+Type: `Function`  
+Arguments: [Current item], [Current item data]
+
+Callback to run when item is navigated to via keyboard navigation.
 
 ###### select
 
