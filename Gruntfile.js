@@ -92,20 +92,21 @@ module.exports = function ( grunt ) {
 					'src/**/*.js'
 				]
 			}
+		},
+
+		nodemon: {
+			test: {
+				script: 'test/server/server.js'
+			}
 		}
 
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-jscs');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-bump');
+	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('stylecheck', ['jshint:main', 'jscs:main']);
 	grunt.registerTask('default', ['stylecheck', 'concat', 'uglify', 'cssmin', 'copy:css']);
+	grunt.registerTask('test', ['nodemon:test']);
 	grunt.registerTask('releasePatch', ['bump-only:patch', 'default', 'bump-commit']);
 	grunt.registerTask('releaseMinor', ['bump-only:minor', 'default', 'bump-commit']);
 	grunt.registerTask('releaseMajor', ['bump-only:major', 'default', 'bump-commit']);

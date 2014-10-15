@@ -18,10 +18,12 @@
     "grunt-contrib-cssmin": "^0.10.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.4.0",
-    "grunt-jscs": "^0.6.2"
+    "grunt-jscs": "^0.6.2",
+    "grunt-nodemon": "^0.3.0",
+    "load-grunt-tasks": "^0.6.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
   "keywords": [
     "autocomplete",
