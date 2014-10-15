@@ -68,20 +68,6 @@ Default: `kist-Autosuggest`
 
 Default HTML class namespace.
 
-###### select
-
-Type: `Function`  
-Arguments: [Current item], [Current item data]
-
-Callback to run on item select.
-
-###### create
-
-Type: `Function`  
-Arguments: 
-
-Callback to run on autosuggest creation (when DOM elements are ready).
-
 ###### map
 
 Type: `Object`
@@ -117,6 +103,20 @@ Available values are:
 
 * **item** (arguments: `data`) - Template for list item.
 * **groupTitle** (arguments: `data`) - Template for group title.
+
+###### create
+
+Type: `Function`  
+Arguments: [Input element]
+
+Callback to run on autosuggest creation (when DOM elements are ready).
+
+###### select
+
+Type: `Function`  
+Arguments: [Current item], [Current item data]
+
+Callback to run on item select.
 
 ##### Options defined as `String`
 

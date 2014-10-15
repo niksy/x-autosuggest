@@ -91,7 +91,7 @@
 			this.dom.form
 				.addClass(this.options.classes.form);
 
-			this.options.create.call(this.element);
+			this.options.create.call(this.element, this.dom.el);
 
 		},
 		destroy: function () {
