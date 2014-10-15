@@ -1,4 +1,4 @@
-/*! kist-autosuggest 0.1.6 - Simple autosuggest plugin. | Author: Ivan Nikolić, 2014 | License: MIT */
+/*! kist-autosuggest 0.1.7 - Simple autosuggest plugin. | Author: Ivan Nikolić, 2014 | License: MIT */
 ;(function ( $, window, document, undefined ) {
 
 	var plugin = {
@@ -16,7 +16,6 @@
 		wrapper: '',
 		results: '-results',
 		input: '-input',
-		form: '-form',
 		list: '-list',
 		item: '-item',
 		toggler: '-toggler',
@@ -30,6 +29,12 @@
 		isActive: 'is-active'
 	};
 	plugin.publicMethods = ['destroy'];
+	plugin.cb = function ( event, data ) {
+		if ( this.options[event] ) {
+			this.options[event].apply(this.element, data);
+		}
+		this.dom.el.trigger((plugin.name + event).toLowerCase(), data);
+	};
 
 	var dom = {
 		common: {
@@ -89,10 +94,7 @@
 					'autocorrect': 'off'
 				});
 
-			this.dom.form
-				.addClass(this.options.classes.form);
-
-			this.options.create.call(this.element);
+			plugin.cb.call(this, 'create', [this.dom.el]);
 
 		},
 		destroy: function () {
@@ -101,10 +103,6 @@
 				.removeClass(this.options.classes.input)
 				.removeAttr('role aria-autocomplete aria-owns aria-activedescendant autocomplete autocorrect')
 				.insertBefore(this.dom.wrapper);
-
-			this.dom.form
-				.removeClass(this.options.classes.form)
-				.removeClass(this.options.classes.isOpened);
 
 			this.dom.wrapper.remove();
 
@@ -117,7 +115,13 @@
 			this.dom.el
 				.on('keyup' + this.instance.ens, ('debounce' in $ ? $.debounce(300, $.proxy(inputEventHandler, this, this.getData)) : $.proxy(inputEventHandler, this, this.getData)))
 				.on('keydown' + this.instance.ens, $.proxy(keyboardNavigation, this))
-				.on('focus' + this.instance.ens, $.proxy(this.showResults, this));
+				.on('focus' + this.instance.ens, $.proxy(this.showResults, this))
+				.on('focus' + this.instance.ens, $.proxy(function ( e ) {
+					plugin.cb.call(this, 'focus', [this.dom.el]);
+				}, this))
+				.on('blur' + this.instance.ens, $.proxy(function ( e ) {
+					plugin.cb.call(this, 'blur', [this.dom.el]);
+				}, this));
 
 			this.dom.wrapper
 				.on('click' + this.instance.ens, '.' + this.options.classesNs.toggler, $.proxy(pointerSelectItem, this));
@@ -419,7 +423,7 @@
 	 * @this {Autosuggest}
 	 */
 	function itemSelected () {
-		this.options.select.call(this.element, this.getCurrentItem(), this.getCurrentItem().data(plugin.ns.dom + '-data'));
+		plugin.cb.call(this, 'select', [this.getCurrentItem(), this.getItemData(this.getCurrentItem())]);
 		this.hideResults();
 	}
 
@@ -486,21 +490,30 @@
 				return;
 			}
 
+			if ( !this.dom.results.hasClass(this.options.classes.isOpened) ) {
+				plugin.cb.call(this, 'open', [this.dom.el]);
+			}
+
 			this.dom.results
 				.attr('aria-expanded', true)
 				.addClass(this.options.classes.isOpened);
 
-			this.dom.form
+			this.dom.wrapper
 				.addClass(this.options.classes.isOpened);
 
 		},
 
 		hideResults: function () {
+
+			if ( this.dom.results.hasClass(this.options.classes.isOpened) ) {
+				plugin.cb.call(this, 'close', [this.dom.el]);
+			}
+
 			this.dom.results
 				.attr('aria-expanded', false)
 				.removeClass(this.options.classes.isOpened);
 
-			this.dom.form
+			this.dom.wrapper
 				.removeClass(this.options.classes.isOpened);
 		},
 
@@ -623,9 +636,20 @@
 
 			}
 
+			plugin.cb.call(this, 'move', [newSelectableItem, this.getItemData(newSelectableItem)]);
+
 			this.setCurrentItem(newSelectableItem);
 			this.setInputVal(newSelectableItem.find(this.options.selectors.value).text());
 
+		},
+
+		/**
+		 * @param  {jQuery} item
+		 *
+		 * @return {Object}
+		 */
+		getItemData: function ( item ) {
+			return item.data(plugin.ns.dom + '-data') || {};
 		},
 
 		/**
@@ -687,6 +711,8 @@
 
 			var jsonData = {};
 
+			plugin.cb.call(this, 'search', [query]);
+
 			// If we can get data array from the cached results object,
 			// we don’t need to call the server for new data,
 			// because we can use our cached data array
@@ -709,6 +735,8 @@
 		 */
 		showData: function ( data ) {
 
+			plugin.cb.call(this, 'response', [data]);
+
 			this.dom.preloader.removeClass(this.options.classes.isActive);
 
 			if ( !data || ( data && !data.length ) ) {
@@ -719,7 +747,7 @@
 			this.setCacheData(data);
 			this.cleanup();
 
-			this[ this.options.response == 'simple' ? 'createList' : 'createGroup' ]( data )
+			this[ this.options.responseType == 'simple' ? 'createList' : 'createGroup' ]( data )
 				.appendTo(this.dom.results);
 
 			this.showResults();
@@ -749,7 +777,7 @@
 				type: 'get',
 				dataType: 'json'
 			},
-			response: 'simple',
+			responseType: 'simple',
 			minLength: 2,
 			maxItems: 10,
 			preventSubmit: true,
@@ -778,9 +806,16 @@
 					return '<h2>' + data.group + ' </h2>';
 				}
 			},
-			select: function () {},
-			create: function () {},
-			namespace: plugin.ns.css
+			namespace: plugin.ns.css,
+			create: $.noop,
+			open: $.noop,
+			close: $.noop,
+			focus: $.noop,
+			blur: $.noop,
+			search: $.noop,
+			response: $.noop,
+			move: $.noop,
+			select: $.noop
 		}
 
 	});

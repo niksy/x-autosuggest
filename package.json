@@ -1,6 +1,6 @@
 {
   "name": "kist-autosuggest",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Simple autosuggest plugin.",
   "author": "Ivan Nikolić",
   "license": "MIT",
