@@ -8,6 +8,8 @@ Simple autosuggest plugin.
 bower install niksy/kist-autosuggest
 ```
 
+Plugin provides some sensible CSS styling, but you’re not required to use it.
+
 ## API
 
 ### `Element.autosuggest(options)`
