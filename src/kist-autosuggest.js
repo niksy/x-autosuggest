@@ -15,7 +15,6 @@
 		wrapper: '',
 		results: '-results',
 		input: '-input',
-		form: '-form',
 		list: '-list',
 		item: '-item',
 		toggler: '-toggler',
@@ -88,9 +87,6 @@
 					'autocorrect': 'off'
 				});
 
-			this.dom.form
-				.addClass(this.options.classes.form);
-
 			this.options.create.call(this.element, this.dom.el);
 
 		},
@@ -100,10 +96,6 @@
 				.removeClass(this.options.classes.input)
 				.removeAttr('role aria-autocomplete aria-owns aria-activedescendant autocomplete autocorrect')
 				.insertBefore(this.dom.wrapper);
-
-			this.dom.form
-				.removeClass(this.options.classes.form)
-				.removeClass(this.options.classes.isOpened);
 
 			this.dom.wrapper.remove();
 
@@ -489,7 +481,7 @@
 				.attr('aria-expanded', true)
 				.addClass(this.options.classes.isOpened);
 
-			this.dom.form
+			this.dom.wrapper
 				.addClass(this.options.classes.isOpened);
 
 		},
@@ -499,7 +491,7 @@
 				.attr('aria-expanded', false)
 				.removeClass(this.options.classes.isOpened);
 
-			this.dom.form
+			this.dom.wrapper
 				.removeClass(this.options.classes.isOpened);
 		},
 
