@@ -109,7 +109,7 @@ Available values are:
 ###### create
 
 Type: `Function`  
-Arguments: [Input element]
+Arguments: [Input element]  
 Event: `autosuggestcreate`
 
 Callback to run on autosuggest creation (when DOM elements are ready).
@@ -117,7 +117,7 @@ Callback to run on autosuggest creation (when DOM elements are ready).
 ###### open
 
 Type: `Function`  
-Arguments: [Input element]
+Arguments: [Input element]  
 Event: `autosuggestopen`
 
 Callback to run when results list is opened.
@@ -125,7 +125,7 @@ Callback to run when results list is opened.
 ###### close
 
 Type: `Function`  
-Arguments: [Input element]
+Arguments: [Input element]  
 Event: `autosuggestclose`
 
 Callback to run when results list is closed.
@@ -133,7 +133,7 @@ Callback to run when results list is closed.
 ###### focus
 
 Type: `Function`  
-Arguments: [Input element]
+Arguments: [Input element]  
 Event: `autosuggestfocus`
 
 Callback to run when input element is focused.
@@ -141,7 +141,7 @@ Callback to run when input element is focused.
 ###### blur
 
 Type: `Function`  
-Arguments: [Input element]
+Arguments: [Input element]  
 Event: `autosuggestblur`
 
 Callback to run when input element is blurred.
@@ -149,7 +149,7 @@ Callback to run when input element is blurred.
 ###### search
 
 Type: `Function`  
-Arguments: [Search query]
+Arguments: [Search query]  
 Event: `autosuggestsearch`
 
 Callback to run when search is performed, before actual request is sent.
@@ -157,7 +157,7 @@ Callback to run when search is performed, before actual request is sent.
 ###### response
 
 Type: `Function`  
-Arguments: [Response data]
+Arguments: [Response data]  
 Event: `autosuggestresponse`
 
 Callback to run after search is performed, after receiving data.
@@ -165,7 +165,7 @@ Callback to run after search is performed, after receiving data.
 ###### move
 
 Type: `Function`  
-Arguments: [Current item], [Current item data]
+Arguments: [Current item], [Current item data]  
 Event: `autosuggestmove`
 
 Callback to run when item is navigated to via keyboard navigation.
@@ -173,7 +173,7 @@ Callback to run when item is navigated to via keyboard navigation.
 ###### select
 
 Type: `Function`  
-Arguments: [Current item], [Current item data]
+Arguments: [Current item], [Current item data]  
 Event: `autosuggestselect`
 
 Callback to run on item select.
