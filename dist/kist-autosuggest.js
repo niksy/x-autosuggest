@@ -10,6 +10,32 @@
 		},
 		error: function ( message ) {
 			throw new Error(plugin.name + ': ' + message);
+		},
+		constructClasses: function () {
+
+			// Prepare CSS classes
+			this.options.classes = {};
+			this.options.classesNs = {};
+
+			$.each(plugin.classes, $.proxy(function ( name, value ) {
+
+				var ns        = $.trim(this.options.namespace);
+				var pluginNs  = plugin.ns.css;
+				var className = pluginNs + value;
+				var classNameNs = className;
+
+				if ( /^is[A-Z]/.test(name) ) {
+					className = classNameNs = value;
+				} else if ( ns !== pluginNs && ns !== '' ) {
+					classNameNs = ns + value;
+					className = pluginNs + value + ' ' + classNameNs;
+				}
+
+				this.options.classesNs[name] = classNameNs;
+				this.options.classes[name] = className;
+
+			}, this));
+
 		}
 	};
 	plugin.classes = {
@@ -181,29 +207,6 @@
 		if ( $.type(this.options.source) === 'string' ) {
 			this.options.source = $.extend({}, this.defaults.source, { url: this.options.source });
 		}
-
-		// Prepare CSS classes
-		this.options.classes = {};
-		this.options.classesNs = {};
-
-		$.each(plugin.classes, $.proxy(function ( name, value ) {
-
-			var ns        = $.trim(this.options.namespace);
-			var pluginNs  = plugin.ns.css;
-			var className = pluginNs + value;
-			var classNameNs = className;
-
-			if ( /^is[A-Z]/.test(name) ) {
-				className = classNameNs = value;
-			} else if ( ns !== pluginNs && ns !== '' ) {
-				classNameNs = ns + value;
-				className = pluginNs + value + ' ' + classNameNs;
-			}
-
-			this.options.classesNs[name] = classNameNs;
-			this.options.classes[name] = className;
-
-		}, this));
 
 	}
 
@@ -438,6 +441,7 @@
 		this.element = element;
 		this.options = $.extend(true, {}, this.defaults, options);
 
+		plugin.constructClasses.call(this);
 		constructOptions.call(this, options);
 
 		instance.setup.call(this);
