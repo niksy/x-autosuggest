@@ -1,0 +1,16 @@
+{{> top title="Basic, no form"}}
+
+	<input type="search" />
+
+	<script>
+		$('input').autosuggest({
+			source: 'http://{{url}}:3000/search',
+			select: function ( item, data ) {
+				console.log(this);
+				console.log(item);
+				console.log(data);
+			}
+		});
+	</script>
+
+{{> bottom}}

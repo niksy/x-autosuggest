@@ -3,13 +3,10 @@
   "version": "0.1.9",
   "description": "Simple autosuggest plugin.",
   "authors": [
-    "Ivan Nikolić"
+    "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/)"
   ],
   "license": "MIT",
-  "main": [
-    "dist/kist-autosuggest.min.js",
-    "dist/kist-autosuggest.min.css"
-  ],
+  "main": "dist/kist-autosuggest.js",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -17,20 +14,26 @@
     "test",
     "tests",
     "src",
+    "lib",
     "Gruntfile.js",
     "package.json"
   ],
   "dependencies": {
-    "jquery": ">=1",
-    "jquery-throttle-debounce": "niksy/jquery-throttle-debounce"
+    "jquery": "~1.11.2"
   },
   "devDependencies": {
     "mustache": "~0.8.2",
-    "jquery": "1"
+    "jquery": "~1.11.2"
   },
   "keywords": [
+    "kist",
     "autocomplete",
-    "autosuggest"
+    "autosuggest",
+    "browserify"
   ],
-  "homepage": "https://github.com/niksy/kist-autosuggest"
+  "homepage": "https://github.com/niksy/kist-autosuggest",
+  "moduleType": [
+    "amd",
+    "globals"
+  ]
 }

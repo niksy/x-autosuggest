@@ -1,0 +1,17 @@
+.kist-Autosuggest {
+	position:relative;
+
+	&-results,
+	&-preloader {
+		display:none;
+	}
+
+	&-results.is-opened,
+	&-preloader.is-active {
+		display:block;
+	}
+
+	&-results {
+		position:absolute; left:0; right:0; top:100%; z-index:1000;
+	}
+}

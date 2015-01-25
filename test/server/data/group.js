@@ -1,7 +1,7 @@
 module.exports = [
     {
-        "group": "Foo",
-        "items": [
+        "groupName": "Foo",
+        "groupItems": [
             {
                 "id": "b0e43f85-e1b8-4907-8f08-a868f6050ee6",
                 "value": "Satellite"
@@ -33,8 +33,8 @@ module.exports = [
         ]
     },
     {
-        "group": "Bar",
-        "items": [
+        "groupName": "Bar",
+        "groupItems": [
             {
                 "id": "050817ba-5731-4ad7-bdf3-e009ad154203",
                 "value": "Morocco"
@@ -70,8 +70,8 @@ module.exports = [
         ]
     },
     {
-        "group": "Baz",
-        "items": [
+        "groupName": "Baz",
+        "groupItems": [
             {
                 "id": "2a7a698c-e30b-4795-b10f-2f2f6092c1f0",
                 "value": "Turks &amp; Caicos"

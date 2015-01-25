@@ -1,0 +1,23 @@
+{{> top title="Basic template"}}
+
+	<form action="/" method="get">
+		<input type="search" />
+		<button type="submit">Search</button>
+	</form>
+
+	<script>
+		$('input').autosuggest({
+			source: 'http://{{url}}:3000/search',
+			selectors: {
+				toggler: 'i',
+				value: 'u'
+			},
+			templates: {
+				item: function ( data ) {
+					return '<strong><i>Item:</i> <u>' + data.value + '</u></strong>';
+				}
+			}
+		});
+	</script>
+
+{{> bottom}}

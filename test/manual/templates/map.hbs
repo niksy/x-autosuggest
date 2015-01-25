@@ -1,0 +1,18 @@
+{{> top title="Map"}}
+
+	<form action="/" method="get">
+		<input type="search" />
+		<button type="submit">Search</button>
+	</form>
+
+	<script>
+		$('input').autosuggest({
+			source: 'http://{{url}}:3000/search',
+			searchQueryProp: 'value',
+			dataMap: {
+				value: 'value'
+			}
+		});
+	</script>
+
+{{> bottom}}

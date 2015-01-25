@@ -25,7 +25,7 @@
 .kist-Autosuggest-item:first-child .kist-Autosuggest-toggler {
 	border-top-width:0;
 }
-.kist-Autosuggest-group-title {
+.kist-Autosuggest-groupTitle {
 	margin:0; padding:5px 10px;
 	font-size:14px;
 }

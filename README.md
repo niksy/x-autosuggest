@@ -5,14 +5,15 @@ Simple autosuggest plugin.
 ## Installation
 
 ```sh
-bower install niksy/kist-autosuggest
-```
+npm  install kist-autosuggest --save
 
-Plugin provides some sensible CSS styling, but you’re not required to use it.
+bower install kist-autosuggest --save
+```
+Basic styling for autosuggest is provided with CSS, but you’re not required to use it.
 
 ## API
 
-### `Element.autosuggest(options)`
+### `$Element.autosuggest(options)`
 
 Returns: `jQuery`
 
@@ -30,6 +31,13 @@ URL on which autosuggest will send data.
 
 If defined as string, it should be full URL, and if defined as object, properties are the same as the ones used for standard [`$.ajax`](http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings) request.
 
+###### searchQueryProp
+
+Type: `String`  
+Default: `value`
+
+URL query property name for input value.
+
 ###### responseType
 
 Type: `String`  
@@ -37,10 +45,10 @@ Default: `simple`
 
 Response type.
 
-Available values are:
-
-* **simple** - Simple JSON.
-* **group** - Grouped JSON.
+| Name | Description |
+| --- | --- |
+| `simple` | Simple JSON. |
+| `group` | Grouped JSON. |
 
 ###### minLength
 
@@ -63,25 +71,47 @@ Default: `true`
 
 Prevent submit on item select.
 
-###### namespace
+###### classes
 
-Type: `String`  
-Default: `kist-Autosuggest`
+Type: `Object`  
 
-Default HTML class namespace.
+Classes for elements.
 
-###### map
+Default value:
+
+```js
+{
+	wrapper: 'kist-Autosuggest',
+	results: 'kist-Autosuggest-results',
+	input: 'kist-Autosuggest-input',
+	list: 'kist-Autosuggest-list',
+	item: 'kist-Autosuggest-item',
+	toggler: 'kist-Autosuggest-toggler',
+	value: 'kist-Autosuggest-value',
+	match: 'kist-Autosuggest-match',
+	preloader: 'kist-Autosuggest-preloader',
+	group: 'kist-Autosuggest-group',
+	groupTitle: 'kist-Autosuggest-groupTitle',
+	isSelected: 'is-selected',
+	isOpened: 'is-opened',
+	isActive: 'is-active'
+}
+```
+
+###### dataMap
 
 Type: `Object`
 
 Custom property mapping for received JSON.
 
-Available values are:
+Key is the property name used for e.g. template data, and value of the property is property name which is present in received JSON data.
 
-* **url** (default: ` `) - Map URL value.
-* **query** (default: `value`) - Map query value.
-* **label** (default: `value`) - Map label value.
-* **groupItems** (default: `items`) - Map group items.
+| Name | Default value | Description |
+| --- | --- | --- |
+| `url` | `''` | URL value. |
+| `label` | `'value'` | Label value. |
+| `groupName` | `'groupName'` | Group name value. |
+| `groupItems` | `'groupItems'` | Group items value. |
 
 ###### selectors
 
@@ -89,22 +119,24 @@ Type: `Object`
 
 Selectors for autosuggest items.
 
-Available values are:
-
-* **toggler** (default: `button, a`) - Selector for toggler element.
-* **value** (default: `button span, a span`) - Selector for element containing value.
-* **groupTitle** (default: `h2`) - Selector for group title.
+| Name | Default value | Description |
+| --- | --- | --- |
+| `toggler` | `button, a` | Selector for toggler element. |
+| `value` | `button span, a span`| Selector for element containing value. |
+| `groupTitle` | `h2``| Selector for group title. |
 
 ###### templates
 
 Type: `Object`
 
-Template generating functions for custom markup
+Template generating functions for custom markup.
 
 Available values are:
 
-* **item** (arguments: `data`) - Template for list item.
-* **groupTitle** (arguments: `data`) - Template for group title.
+| Name | Arguments | Description |
+| --- | --- | --- |
+| `item` | `data` | Template for list item. |
+| `groupTitle` | `data` | Template for group title. |
 
 ###### create
 
@@ -206,8 +238,7 @@ $('input').autosuggest({
 	response: 'simple',
 	minLength: 2,
 	maxItems: 10,
-	preventSubmit: true,
-	namespace: 'exampleNamespace'
+	preventSubmit: true
 });
 
 $('input').autosuggest({
@@ -219,8 +250,7 @@ $('input').autosuggest({
 	response: 'simple',
 	minLength: 2,
 	maxItems: 10,
-	preventSubmit: true,
-	namespace: 'exampleNamespace'
+	preventSubmit: true
 });
 ```
 

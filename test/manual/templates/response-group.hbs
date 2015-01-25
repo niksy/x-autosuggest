@@ -1,0 +1,15 @@
+{{> top title="Response group"}}
+
+	<form action="/" method="get">
+		<input type="search" />
+		<button type="submit">Search</button>
+	</form>
+
+	<script>
+		$('input').autosuggest({
+			source: 'http://{{url}}:3000/searchGroup',
+			responseType: 'group'
+		});
+	</script>
+
+{{> bottom}}

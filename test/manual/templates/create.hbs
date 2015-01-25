@@ -1,0 +1,17 @@
+{{> top title="Create"}}
+
+	<form action="/" method="get">
+		<input type="search" />
+		<button type="submit">Search</button>
+	</form>
+
+	<script>
+		$('input').autosuggest({
+			source: 'http://{{url}}:3000/search',
+			create: function () {
+				console.log('Created!');
+			}
+		});
+	</script>
+
+{{> bottom}}

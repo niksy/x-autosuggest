@@ -1,0 +1,19 @@
+{{> top title="Source as object"}}
+
+	<form action="/" method="get">
+		<input type="search" />
+		<button type="submit">Search</button>
+	</form>
+
+	<script>
+		$('input').autosuggest({
+			source: {
+				url: 'http://{{url}}:3000/search',
+				data: {
+					foo: 1
+				}
+			}
+		});
+	</script>
+
+{{> bottom}}

@@ -6,6 +6,10 @@
 		"beforeOpeningRoundBrace": true,
 		"beforeOpeningCurlyBrace": true
 	},
+	"requireSpacesInFunctionDeclaration": {
+		"beforeOpeningRoundBrace": true,
+		"beforeOpeningCurlyBrace": true
+	},
 	"requireSpacesInAnonymousFunctionExpression": {
 		"beforeOpeningRoundBrace": true,
 		"beforeOpeningCurlyBrace": true
@@ -14,11 +18,13 @@
 		"beforeOpeningRoundBrace": true,
 		"beforeOpeningCurlyBrace": true
 	},
-	"requireSpacesInFunctionDeclaration": {
-		"beforeOpeningRoundBrace": true,
-		"beforeOpeningCurlyBrace": true
+	"requireSpacesInConditionalExpression": {
+		"afterTest": true,
+		"beforeConsequent": true,
+		"afterConsequent": true,
+		"beforeAlternate": true
 	},
-	"disallowMultipleVarDecl": true,
+	"disallowMultipleVarDecl": "exceptUndefined",
 	"disallowEmptyBlocks": true,
 	"requireCommaBeforeLineBreak": true,
 	"requireOperatorBeforeLineBreak": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
@@ -37,14 +43,24 @@
 	"disallowKeywordsOnNewLine": ["else"],
 	"requireLineFeedAtFileEnd": true,
 	"requireCapitalizedConstructors": true,
-	"safeContextKeyword": [ "self" ],
+	"safeContextKeyword": ["self"],
 	"disallowYodaConditions": true,
 	"requireSpaceBeforeBinaryOperators": ["=", "==", "===", "!=", "!=="],
 	"disallowTrailingComma": true,
-	"requireBlocksOnNewline": true,
-	"requireSpaceBeforeBlockStatements": true
-	// "disallowLeftStickedOperators": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
-	// "requireLeftStickedOperators": [","],
-	// "disallowRightStickedOperators": ["?", "+", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
-	// "requireRightStickedOperators": ["!"],
+	"requireBlocksOnNewline": 1,
+	"requireSpaceBeforeBlockStatements": true,
+	"requireCapitalizedComments": true,
+	"validateParameterSeparator": ", ",
+	"disallowQuotedKeysInObjects": "allButReserved",
+	"disallowSpacesInsideArrayBrackets": "all",
+	"disallowSpacesInsideObjectBrackets": "all",
+	"requireSpaceBeforeObjectValues": true,
+	"requireSpaceBeforeKeywords": ["else", "while", "catch"],
+	"requireSpaceBetweenArguments": true,
+	"disallowSpaceAfterObjectKeys": true,
+	"requireSpaceAfterLineComment": true,
+	"requirePaddingNewLinesInObjects": true,
+	"disallowOperatorBeforeLineBreak": ["."],
+	"disallowNewlineBeforeBlockStatements": true,
+	"disallowMultipleLineBreaks": true
 }
