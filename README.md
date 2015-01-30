@@ -210,6 +210,14 @@ Event: `autosuggestselect`
 
 Callback to run on item select.
 
+###### input
+
+Type: `Function`  
+Arguments: [Current input value]  
+Event: `autosuggestinput`
+
+Callback to run on entering input value.
+
 ##### Options defined as `String`
 
 Type: `String`

@@ -47,6 +47,9 @@
 			})
 			.on('autosuggestselect', function ( e, item, itemData ) {
 				console.log(arguments);
+			})
+			.on('autosuggestinput', function ( e, item, itemData ) {
+				console.log(arguments);
 			});
 
 		input01.autosuggest({
@@ -56,6 +59,9 @@
 			},
 			close: function ( el ) {
 				console.warn(arguments);
+			},
+			input: function ( val ) {
+				console.info(arguments);
 			}
 		});
 
