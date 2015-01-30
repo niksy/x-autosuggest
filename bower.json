@@ -1,6 +1,6 @@
 {
   "name": "kist-autosuggest",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple autosuggest plugin.",
   "authors": [
     "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/)"
