@@ -1,2 +1,2 @@
-/*! kist-autosuggest 0.2.2 - Simple autosuggest plugin. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
+/*! kist-autosuggest 0.2.3 - Simple autosuggest plugin. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
 .kist-Autosuggest{position:relative}.kist-Autosuggest-preloader,.kist-Autosuggest-results{display:none}.kist-Autosuggest-preloader.is-active,.kist-Autosuggest-results.is-opened{display:block}.kist-Autosuggest-results{position:absolute;left:0;right:0;top:100%;z-index:1000}
