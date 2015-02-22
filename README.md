@@ -9,6 +9,7 @@ npm  install kist-autosuggest --save
 
 bower install kist-autosuggest --save
 ```
+
 Basic styling for autosuggest is provided with CSS, but you’re not required to use it.
 
 ## API
@@ -71,6 +72,13 @@ Default: `true`
 
 Prevent submit on item select.
 
+###### debounceInputValue
+
+Type: `Integer`  
+Default: `300`
+
+Input debounce value in milliseconds.
+
 ###### classes
 
 Type: `Object`  
@@ -108,8 +116,8 @@ Key is the property name used for e.g. template data, and value of the property 
 
 | Name | Default value | Description |
 | --- | --- | --- |
-| `url` | `''` | URL value. |
-| `label` | `'value'` | Label value. |
+| `url` | `'value'` | URL value. |
+| `value` | `'value'` | Label value. |
 | `groupName` | `'groupName'` | Group name value. |
 | `groupItems` | `'groupItems'` | Group items value. |
 

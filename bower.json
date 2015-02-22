@@ -6,7 +6,7 @@
     "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/)"
   ],
   "license": "MIT",
-  "main": "dist/kist-autosuggest.js",
+  "main": ["dist/kist-autosuggest.js", "dist/kist-autosuggest.css"],
   "ignore": [
     "**/.*",
     "node_modules",
