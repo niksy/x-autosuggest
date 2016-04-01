@@ -10,8 +10,7 @@
   },
   "scripts": {
     "version": "grunt update_json && grunt build && git add -A",
-    "postinstall": "bower install",
-    "test": "grunt test"
+    "test": "bower install && grunt test"
   },
   "dependencies": {
     "jquery": "^1.11.2",
