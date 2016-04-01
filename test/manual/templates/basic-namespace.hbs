@@ -8,7 +8,10 @@
 	<script>
 		$('input').autosuggest({
 			source: 'http://{{url}}:3000/search',
-			classes: $.fn.autosuggest.appendNamespacedClasses('Foobar')
+			classes: {
+				wrapper: $.fn.autosuggest.defaults.classes.wrapper + ' Foobar',
+				input: $.fn.autosuggest.defaults.classes.input + ' Foobar-input'
+			}
 		});
 	</script>
 

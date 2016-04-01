@@ -17,8 +17,7 @@ module.exports = function ( grunt ) {
 					banner: '<%= meta.banner %>'
 				},
 				files: {
-					'dist/<%= pkg.name %>.js': ['compiled/<%= pkg.main %>'],
-					'dist/<%= pkg.name %>.css': ['compiled/lib/style/index.css']
+					'dist/<%= pkg.name %>.js': ['compiled/<%= pkg.main %>']
 				}
 			}
 		},
@@ -30,45 +29,6 @@ module.exports = function ( grunt ) {
 				},
 				files: {
 					'dist/<%= pkg.name %>.min.js': ['compiled/<%= pkg.main %>']
-				}
-			}
-		},
-
-		cssmin: {
-			dist: {
-				options: {
-					banner: '<%= meta.banner %>'
-				},
-				files: {
-					'dist/<%= pkg.name %>.min.css': ['compiled/lib/style/index.css']
-				}
-			}
-		},
-
-		bump: {
-			options: {
-				files: ['package.json', 'bower.json'],
-				updateConfigs: ['pkg'],
-				commit: true,
-				commitMessage: 'Release %VERSION%',
-				commitFiles: ['-a'],
-				createTag: true,
-				tagName: '%VERSION%',
-				tagMessage: '',
-				push: false
-			}
-		},
-
-		jscs: {
-			main: {
-				options: {
-					config: '.jscsrc'
-				},
-				files: {
-					src: [
-						'<%= pkg.main %>',
-						'lib/**/*.js'
-					]
 				}
 			}
 		},
@@ -85,17 +45,6 @@ module.exports = function ( grunt ) {
 			}
 		},
 
-		sass: {
-			options: {
-				sourcemap: 'none'
-			},
-			main: {
-				files: {
-					'compiled/lib/style/index.css': '<%= pkg.style %>'
-				}
-			}
-		},
-
 		browserify: {
 			options: {
 				browserifyOptions: {
@@ -104,7 +53,8 @@ module.exports = function ( grunt ) {
 			},
 			standalone: {
 				options: {
-					plugin: ['bundle-collapser/plugin']
+					plugin: ['bundle-collapser/plugin'],
+					transform: [['browserify-shim', { global: true }]]
 				},
 				files: {
 					'compiled/<%= pkg.main %>': '<%= pkg.main %>'
@@ -144,16 +94,6 @@ module.exports = function ( grunt ) {
 					src: ['**'],
 					dest: 'compiled/test/manual/assets/'
 				}]
-			},
-			css: {
-				options: {
-					process: function ( content, srcpath ) {
-						return content.replace(/\*\/\n/g,'*/');
-					}
-				},
-				files: {
-					'dist/<%= pkg.name %>.min.css': ['dist/<%= pkg.name %>.min.css']
-				}
 			}
 		},
 
@@ -169,10 +109,6 @@ module.exports = function ( grunt ) {
 				files: 'test/manual/**/*.hbs',
 				tasks: ['compile-handlebars:test']
 			},
-			sass: {
-				files: ['lib/**/*.scss'],
-				tasks: ['sass:main']
-			},
 			browserify: {
 				files: ['<%= pkg.main %>', 'lib/**/*.js'],
 				tasks: ['browserify:standalone']
@@ -183,6 +119,17 @@ module.exports = function ( grunt ) {
 			test: {
 				script: 'test/server/server.js'
 			}
+		},
+
+		'update_json': {
+			options: {
+				indent: '  '
+			},
+			bower: {
+				src: 'package.json',
+				dest: 'bower.json',
+				fields: 'version'
+			}
 		}
 
 	});
@@ -190,17 +137,14 @@ module.exports = function ( grunt ) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('test', function () {
-		var tasks = ['compile-handlebars:test','copy:test','sass:main','browserify:standalone'];
+		var tasks = ['compile-handlebars:test', 'copy:test', 'browserify:standalone'];
 		if ( grunt.option('watch') || grunt.option('watch-vm') ) {
 			tasks.push('concurrent:test');
 		}
 		grunt.task.run(tasks);
 	});
 
-	grunt.registerTask('stylecheck', ['jshint:main', 'jscs:main']);
-	grunt.registerTask('default', ['stylecheck', 'sass:main', 'browserify:standalone', 'concat', 'uglify', 'cssmin', 'copy:css']);
-	grunt.registerTask('releasePatch', ['bump-only:patch', 'default', 'bump-commit']);
-	grunt.registerTask('releaseMinor', ['bump-only:minor', 'default', 'bump-commit']);
-	grunt.registerTask('releaseMajor', ['bump-only:major', 'default', 'bump-commit']);
+	grunt.registerTask('lint', ['jshint:main']);
+	grunt.registerTask('build', ['lint', 'browserify:standalone', 'concat', 'uglify']);
 
 };

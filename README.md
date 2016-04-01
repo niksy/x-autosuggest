@@ -10,8 +10,6 @@ npm  install kist-autosuggest --save
 bower install kist-autosuggest --save
 ```
 
-Basic styling for autosuggest is provided with CSS, but you’re not required to use it.
-
 ## API
 
 ### `$Element.autosuggest(options)`
