@@ -1,12 +1,14 @@
 {
   "name": "kist-autosuggest",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Simple autosuggest plugin.",
   "authors": [
     "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/)"
   ],
   "license": "MIT",
-  "main": ["dist/kist-autosuggest.js"],
+  "main": [
+    "dist/kist-autosuggest.js"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",

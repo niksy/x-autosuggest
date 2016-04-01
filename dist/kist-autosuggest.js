@@ -1,16 +1,16 @@
-/*! kist-autosuggest 0.2.3 - Simple autosuggest plugin. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2015 | License: MIT */
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self);var n=f;n=n.jQuery||(n.jQuery={}),n=n.fn||(n.fn={}),n.autosuggest=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*! kist-autosuggest 0.3.0 - Simple autosuggest plugin. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2016 | License: MIT */
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g=(g.jQuery||(g.jQuery = {}));g=(g.fn||(g.fn = {}));g.autosuggest = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 // jscs:disable requireCapitalizedComments
 
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(9);
-var htmlClasses = require(5);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var meta = require(11);
+var htmlClasses = require(6);
 var dom = require(2);
-var events = require(3);
-var instance = require(7);
-var emit = require(12)(meta.name);
-var getClassSelector = require(4);
+var events = require(4);
+var instance = require(8);
+var emit = require(3)(meta.name);
+var getClassSelector = require(5);
 
 /**
  * @param  {Object} item
@@ -545,12 +545,12 @@ $.extend(Autosuggest.prototype, {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],2:[function(require,module,exports){
+},{"11":11,"2":2,"3":3,"4":4,"5":5,"6":6,"8":8}],2:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(9);
-var htmlClasses = require(5);
-var emit = require(12)(meta.name);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var meta = require(11);
+var htmlClasses = require(6);
+var emit = require(3)(meta.name);
 
 module.exports = {
 	$doc: $(document),
@@ -614,15 +614,45 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{"11":11,"3":3,"6":6}],3:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
+/* jshint maxparams:false */
+
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+
+/**
+ * @param  {String} name
+ *
+ * @return {Function}
+ */
+module.exports = function ( name ) {
+
+	/**
+	 * @param  {Object}   ctx
+	 * @param  {String}   eventName
+	 * @param  {Array}    data
+	 * @param  {jQuery}   triggerEl
+	 */
+	return function ( ctx, eventName, data, triggerEl ) {
+		var el = (ctx.dom && ctx.dom.el) || ctx.$el || $({});
+		if ( ctx.options[eventName] ) {
+			ctx.options[eventName].apply((el.length === 1 ? el[0] : el.toArray()), data);
+		}
+		(triggerEl || el).trigger(((name || '') + eventName).toLowerCase(), data);
+	};
+
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],4:[function(require,module,exports){
+(function (global){
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
 var dom = require(2);
-var keymap = require(8);
-var meta = require(9);
-var emit = require(12)(meta.name);
-var debounce = require(15).debounce;
-var getClassSelector = require(4);
+var keymap = require(10);
+var meta = require(11);
+var emit = require(3)(meta.name);
+var debounce = require(13).debounce;
+var getClassSelector = require(5);
 
 var key = keymap.KEY;
 var whitelist = keymap.WHITELIST;
@@ -789,7 +819,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],4:[function(require,module,exports){
+},{"10":10,"11":11,"13":13,"2":2,"3":3,"5":5}],5:[function(require,module,exports){
 /**
  * @param  {String} className
  *
@@ -799,8 +829,8 @@ module.exports = function ( className ) {
 	return '.' + className.split(' ').join('.');
 };
 
-},{}],5:[function(require,module,exports){
-var meta = require(9);
+},{}],6:[function(require,module,exports){
+var meta = require(11);
 
 module.exports = {
 	wrapper: meta.ns.htmlClass,
@@ -819,21 +849,19 @@ module.exports = {
 	isActive: 'is-active'
 };
 
-},{}],6:[function(require,module,exports){
+},{"11":11}],7:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
 var Ctor = require(1);
-var meta = require(9);
-var isPublicMethod = require(13)(meta.publicMethods);
-var appendClass = require(10)(Ctor.prototype.defaults.classes);
-var appendNamespacedClasses = require(11)(Ctor.prototype.defaults.classes, meta.ns.htmlClass);
+var meta = require(11);
+var isPublicMethod = require(9)(meta.publicMethods);
 
 /**
  * @param  {Object|String} options
  *
  * @return {jQuery}
  */
-var plugin = module.exports = function ( options ) {
+var plugin = $.fn[meta.name] = module.exports = function ( options ) {
 
 	options = options || {};
 
@@ -851,14 +879,12 @@ var plugin = module.exports = function ( options ) {
 
 };
 plugin.defaults = Ctor.prototype.defaults;
-plugin.appendClass = appendClass;
-plugin.appendNamespacedClasses = appendNamespacedClasses;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{"1":1,"11":11,"9":9}],8:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-var meta = require(9);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+var meta = require(11);
 var instance = 0;
 
 module.exports = {
@@ -872,118 +898,9 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
-var KEY = {
-	enter: 13,
-	escape: 27,
-	up: 38,
-	down: 40,
-	mouseLeft: 1,
-	mouseRight: 3
-};
-var WHITELIST = [16,17,18,20,37,KEY.up,39,KEY.down,91,93];
-var BLACKLIST = [9,KEY.enter,KEY.escape].concat(WHITELIST);
-
-module.exports = {
-	KEY: KEY,
-	BLACKLIST: BLACKLIST,
-	WHITELIST: WHITELIST
-};
-
-},{}],9:[function(require,module,exports){
-module.exports = {
-	name: 'autosuggest',
-	ns: {
-		htmlClass: 'kist-Autosuggest',
-		event: '.kist.autosuggest',
-		dataAttr: 'kist-autosuggest'
-	},
-	publicMethods: ['destroy']
-};
-
-},{}],10:[function(require,module,exports){
+},{"11":11}],9:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-
-/**
- * @param  {Object} classes
- *
- * @return {Function}
- */
-module.exports = function ( classes ) {
-
-	/**
-	 * @param  {String} prop
-	 * @param  {String} className
-	 *
-	 * @return {String}
-	 */
-	return function ( prop, className ) {
-		return [classes[prop], className].join(' ');
-	};
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],11:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-
-/**
- * @param  {Object} classes
- * @param  {String} defaultNs
- *
- * @return {Function}
- */
-module.exports = function ( classes, defaultNs ) {
-
-	/**
-	 * @param  {String} ns
-	 *
-	 * @return {Object}
-	 */
-	return function ( ns ) {
-		return $.extend.apply(null, $.map(classes, function ( val, key ) {
-			var o = {};
-			o[key] = $.trim([val, (val.indexOf(defaultNs) !== -1 ? val.replace(defaultNs, ns) : '')].join(' '));
-			return o;
-		}));
-	};
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],12:[function(require,module,exports){
-(function (global){
-/* jshint maxparams:false */
-
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
-
-/**
- * @param  {String} name
- *
- * @return {Function}
- */
-module.exports = function ( name ) {
-
-	/**
-	 * @param  {Object}   ctx
-	 * @param  {String}   eventName
-	 * @param  {Array}    data
-	 * @param  {jQuery}   triggerEl
-	 */
-	return function ( ctx, eventName, data, triggerEl ) {
-		var el = (ctx.dom && ctx.dom.el) || ctx.$el || $({});
-		if ( ctx.options[eventName] ) {
-			ctx.options[eventName].apply((el.length === 1 ? el[0] : el.toArray()), data);
-		}
-		(triggerEl || el).trigger(((name || '') + eventName).toLowerCase(), data);
-	};
-
-};
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],13:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
 
 /**
  * @param  {Array} methods
@@ -1004,8 +921,37 @@ module.exports = function ( methods ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
-var throttle = require(16);
+},{}],10:[function(require,module,exports){
+var KEY = {
+	enter: 13,
+	escape: 27,
+	up: 38,
+	down: 40,
+	mouseLeft: 1,
+	mouseRight: 3
+};
+var WHITELIST = [16,17,18,20,37,KEY.up,39,KEY.down,91,93];
+var BLACKLIST = [9,KEY.enter,KEY.escape].concat(WHITELIST);
+
+module.exports = {
+	KEY: KEY,
+	BLACKLIST: BLACKLIST,
+	WHITELIST: WHITELIST
+};
+
+},{}],11:[function(require,module,exports){
+module.exports = {
+	name: 'autosuggest',
+	ns: {
+		htmlClass: 'kist-Autosuggest',
+		event: '.kist.autosuggest',
+		dataAttr: 'kist-autosuggest'
+	},
+	publicMethods: ['destroy']
+};
+
+},{}],12:[function(require,module,exports){
+var throttle = require(14);
 
 /**
  * Debounce execution of a function. Debouncing, unlike throttling,
@@ -1025,15 +971,15 @@ module.exports = function ( delay, atBegin, callback ) {
 	return callback === undefined ? throttle(delay, atBegin, false) : throttle(delay, callback, atBegin !== false);
 };
 
-},{}],15:[function(require,module,exports){
+},{"14":14}],13:[function(require,module,exports){
 module.exports = {
-	throttle: require(16),
-	debounce: require(14)
+	throttle: require(14),
+	debounce: require(12)
 };
 
-},{}],16:[function(require,module,exports){
+},{"12":12,"14":14}],14:[function(require,module,exports){
 (function (global){
-var $ = (typeof window !== "undefined" ? window.$ : typeof global !== "undefined" ? global.$ : null);
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
 
 /**
  * Throttle execution of a function. Especially useful for rate limiting
@@ -1133,5 +1079,5 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[6])(6)
+},{}]},{},[7])(7)
 });
