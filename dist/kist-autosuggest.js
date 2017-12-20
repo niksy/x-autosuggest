@@ -1,4 +1,4 @@
-/*! kist-autosuggest 0.3.1 - Simple autosuggest plugin. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2016 | License: MIT */
+/*! kist-autosuggest 0.4.0 - Simple autosuggest plugin. | Author: Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com/), 2017 | License: MIT */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g=(g.jQuery||(g.jQuery = {}));g=(g.fn||(g.fn = {}));g.autosuggest = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 // jscs:disable requireCapitalizedComments
@@ -54,19 +54,6 @@ var Autosuggest = module.exports = function ( element, options ) {
 	instance.setup.call(this);
 	dom.setup.call(this);
 	events.setup.call(this);
-
-	// Prepare source URL
-	if ( $.type(this.options.source) === 'string' ) {
-		this.options.source = $.extend({}, this.defaults.source, {
-			url: this.options.source
-		});
-	}
-	if (
-		!this.options.source.url &&
-		this.$form.length !== 0
-	) {
-		this.options.source.url = this.$form.attr('action');
-	}
 
 };
 
@@ -152,8 +139,6 @@ $.extend(Autosuggest.prototype, {
 
 		$.each(data, $.proxy(function ( key, group ) {
 
-			group = mapData(group, this.options.dataMap);
-
 			groupItem = $('<div />', {
 				'class': this.options.classes.group
 			});
@@ -210,8 +195,6 @@ $.extend(Autosuggest.prototype, {
 	 */
 	createItem: function ( data, index ) {
 		// jscs:disable disallowQuotedKeysInObjects
-
-		data = mapData(data, this.options.dataMap);
 
 		var item = $();
 		var match = getMatchHtml(this.options.classes.match, this.getInputVal(), data.value);
@@ -413,7 +396,7 @@ $.extend(Autosuggest.prototype, {
 	getData: function ( query ) {
 
 		var data = {};
-		var searchQueryProp = this.options.searchQueryProp;
+		var sourceResult, showDataCb, hidePreloaderCb;
 
 		emit(this, 'search', [query]);
 
@@ -425,24 +408,24 @@ $.extend(Autosuggest.prototype, {
 			return;
 		}
 
-		// Create additional data for sending to server (e.g. custom query key)
-		if ( searchQueryProp ) {
-			data[searchQueryProp] = query;
-		}
-
 		this.showPreloader();
 
-		$.ajax(
-			$.extend(true,
-				{},
-				this.options.source,
-				{
-					data: data
-				}
-			)
-		)
-		.done($.proxy(this.showData, this))
-		.always($.proxy(this.hidePreloader, this));
+		sourceResult = this.options.source(query);
+		showDataCb = $.proxy(this.showData, this);
+		hidePreloaderCb = $.proxy(this.hidePreloader, this);
+
+		if (
+			'done' in sourceResult &&
+			'always' in sourceResult
+		) {
+			sourceResult
+				.done(showDataCb)
+				.always(hidePreloaderCb);
+		} else {
+			sourceResult
+				.then(showDataCb, hidePreloaderCb)
+				.catch(hidePreloaderCb);
+		}
 
 	},
 
@@ -494,23 +477,14 @@ $.extend(Autosuggest.prototype, {
 	position: 0,
 
 	defaults: {
-		source: {
-			url: '/',
-			type: 'get',
-			dataType: 'json'
+		source: function ( query ) {
+			return $.Deferred();
 		},
-		searchQueryProp: 'value',
 		responseType: 'simple',
 		minLength: 2,
 		maxItems: 10,
 		preventSubmit: true,
 		debounceInputValue: 300,
-		dataMap: {
-			url: 'value',
-			value: 'value',
-			groupName: 'groupName',
-			groupItems: 'groupItems'
-		},
 		selectors: {
 			toggler: 'button, a',
 			value: 'button span, a span',
