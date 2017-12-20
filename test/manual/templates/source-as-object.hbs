@@ -7,11 +7,14 @@
 
 	<script>
 		$('input').autosuggest({
-			source: {
-				url: 'http://{{url}}:3000/search',
-				data: {
-					foo: 1
-				}
+			source: function ( query ) {
+				return $.ajax({
+					url: 'http://{{url}}:3000/search',
+					data: {
+						value: query,
+						foo: 1
+					}
+				});
 			}
 		});
 	</script>

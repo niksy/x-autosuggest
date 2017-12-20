@@ -7,7 +7,14 @@
 
 	<script>
 		$('input').autosuggest({
-			source: 'http://{{url}}:3000/searchGroup',
+			source: function ( query ) {
+				return $.ajax({
+					url: 'http://{{url}}:3000/searchGroup',
+					data: {
+						value: query
+					}
+				});
+			},
 			responseType: 'group'
 		});
 	</script>

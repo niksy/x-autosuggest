@@ -7,10 +7,27 @@
 
 	<script>
 		$('input').autosuggest({
-			source: 'http://{{url}}:3000/search',
-			searchQueryProp: 'value',
-			dataMap: {
-				value: 'value'
+			source: function ( query ) {
+
+				var dfd = $.Deferred();
+
+				$.ajax({
+					url: 'http://{{url}}:3000/search',
+					data: {
+						value: query
+					}
+				})
+					.done(function ( results ) {
+						dfd.resolve($.map(results, function ( result ) {
+							return {
+								url: result.id,
+								value: result.value
+							};
+						}))
+					});
+
+				return dfd;
+
 			}
 		});
 	</script>

@@ -7,7 +7,14 @@
 
 	<script>
 		$('input').autosuggest({
-			source: 'http://{{url}}:3000/search',
+			source: function ( query ) {
+				return $.ajax({
+					url: 'http://{{url}}:3000/search',
+					data: {
+						value: query
+					}
+				});
+			},
 			selectors: {
 				toggler: 'i',
 				value: 'u'

@@ -24,18 +24,20 @@ Type: `Object|String`
 
 ###### source
 
-Type: `String|Object`
+Type: `Function`  
+Arguments: [Input value]  
+Returns: `Promise|jQuery.Deferred`
 
-URL on which autosuggest will send data.
+Fetch suggestions data.
 
-If defined as string, it should be full URL, and if defined as object, properties are the same as the ones used for standard [`$.ajax`](http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings) request.
+Each suggestion in array of suggestions should be `Object` with properties:
 
-###### searchQueryProp
-
-Type: `String`  
-Default: `value`
-
-URL query property name for input value.
+| Name | Description |
+| --- | --- |
+| `url` | URL value. |
+| `value` | Label value. |
+| `groupName` | Group name value (if grouping is requested). |
+| `groupItems` | Group items value (if grouping is requested). |
 
 ###### responseType
 
@@ -103,21 +105,6 @@ Default value:
 	isActive: 'is-active'
 }
 ```
-
-###### dataMap
-
-Type: `Object`
-
-Custom property mapping for received JSON.
-
-Key is the property name used for e.g. template data, and value of the property is property name which is present in received JSON data.
-
-| Name | Default value | Description |
-| --- | --- | --- |
-| `url` | `'value'` | URL value. |
-| `value` | `'value'` | Label value. |
-| `groupName` | `'groupName'` | Group name value. |
-| `groupItems` | `'groupItems'` | Group items value. |
 
 ###### selectors
 
@@ -248,20 +235,32 @@ Standard set of options.
 
 ```js
 $('input').autosuggest({
-	source: 'example/search/endpoint',
-	response: 'simple',
+	source: function ( query ) {
+		return $.ajax({
+			url: 'example/search/endpoint',
+			data: {
+				term: query
+			}
+		});
+	},
+	responseType: 'simple',
 	minLength: 2,
 	maxItems: 10,
 	preventSubmit: true
 });
 
 $('input').autosuggest({
-	source: {
-		url: 'example/search/endpoint',
-		type: 'get',
-		dataType: 'json'
+	source: function ( query ) {
+		return $.ajax({
+			url: 'example/search/endpoint',
+			type: 'get',
+			dataType: 'json',
+			data: {
+				term: query
+			}
+		});
 	}
-	response: 'simple',
+	responseType: 'simple',
 	minLength: 2,
 	maxItems: 10,
 	preventSubmit: true
@@ -298,7 +297,14 @@ var template = $('#template').html();
 Mustache.parse(template);
 
 $('input').autosuggest({
-	source: 'http://localhost:3000/search',
+	source: function ( query ) {
+		return $.ajax({
+			url: 'http://localhost:3000/search',
+			data: {
+				term: query
+			}
+		});
+	},
 	selectors: {
 		toggler: 'i',
 		value: 'span'
