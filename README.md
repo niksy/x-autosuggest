@@ -2,13 +2,140 @@
 
 Simple autosuggest plugin.
 
-## Installation
+## Install
 
 ```sh
-npm  install kist-autosuggest --save
-
-bower install kist-autosuggest --save
+npm install kist-autosuggest --save
 ```
+
+## Usage
+
+Default structure for autosuggest.
+
+```html
+<form action="/search" method="get">
+	<input type="search" />
+</form>
+
+<input type="search" />
+```
+
+Standard set of options.
+
+```js
+import 'kist-autosuggest';
+
+$('input').autosuggest({
+	source: function ( query ) {
+		return $.ajax({
+			url: 'example/search/endpoint',
+			data: {
+				term: query
+			}
+		});
+	},
+	responseType: 'simple',
+	minLength: 2,
+	maxItems: 10,
+	preventSubmit: true
+});
+
+$('input').autosuggest({
+	source: function ( query ) {
+		return $.ajax({
+			url: 'example/search/endpoint',
+			type: 'get',
+			dataType: 'json',
+			data: {
+				term: query
+			}
+		});
+	}
+	responseType: 'simple',
+	minLength: 2,
+	maxItems: 10,
+	preventSubmit: true
+});
+```
+
+Basic template support.
+
+```js
+import 'kist-autosuggest';
+
+$('input').autosuggest({
+	selectors: {
+		toggler: 'i',
+		value: 'u'
+	},
+	templates: {
+		item: function ( data ) {
+			return '<strong><i>Item:</i> <u>' + data.value + '</u></strong>';
+		}
+	}
+});
+```
+
+Template engine support.
+
+```html
+<script id="template" type="x-tmpl-mustache">
+	<i><span style="color:green">{{value}}</span></i>
+</script>
+```
+
+```js
+import 'kist-autosuggest';
+import Mustache from 'mustache';
+
+var template = $('#template').html();
+
+Mustache.parse(template);
+
+$('input').autosuggest({
+	source: function ( query ) {
+		return $.ajax({
+			url: 'http://localhost:3000/search',
+			data: {
+				term: query
+			}
+		});
+	},
+	selectors: {
+		toggler: 'i',
+		value: 'span'
+	},
+	templates: {
+		item: function ( data ) {
+			return Mustache.render(template, data);
+		}
+	}
+});
+```
+
+Callback on item select.
+
+```js
+import 'kist-autosuggest';
+
+$('input').autosuggest({
+	select: function ( item, data ) {
+		$(this).addClass('inputClass')
+		item.addClass('itemClass');
+		console.log(data);
+	}
+});
+```
+
+Destroy plugin instance.
+
+```js
+import 'kist-autosuggest';
+
+$('input').autosuggest('destroy');
+```
+
+More usage examples.
 
 ## API
 
@@ -219,125 +346,13 @@ Type: `String`
 
 Destroy plugin instance.
 
-## Examples
-
-Default structure for autosuggest.
-
-```html
-<form action="/search" method="get">
-	<input type="search" />
-</form>
-
-<input type="search" />
-```
-
-Standard set of options.
-
-```js
-$('input').autosuggest({
-	source: function ( query ) {
-		return $.ajax({
-			url: 'example/search/endpoint',
-			data: {
-				term: query
-			}
-		});
-	},
-	responseType: 'simple',
-	minLength: 2,
-	maxItems: 10,
-	preventSubmit: true
-});
-
-$('input').autosuggest({
-	source: function ( query ) {
-		return $.ajax({
-			url: 'example/search/endpoint',
-			type: 'get',
-			dataType: 'json',
-			data: {
-				term: query
-			}
-		});
-	}
-	responseType: 'simple',
-	minLength: 2,
-	maxItems: 10,
-	preventSubmit: true
-});
-```
-
-Basic template support.
-
-```js
-$('input').autosuggest({
-	selectors: {
-		toggler: 'i',
-		value: 'u'
-	},
-	templates: {
-		item: function ( data ) {
-			return '<strong><i>Item:</i> <u>' + data.value + '</u></strong>';
-		}
-	}
-});
-```
-
-Template engine support.
-
-```html
-<script id="template" type="x-tmpl-mustache">
-	<i><span style="color:green">{{value}}</span></i>
-</script>
-```
-
-```js
-var template = $('#template').html();
-
-Mustache.parse(template);
-
-$('input').autosuggest({
-	source: function ( query ) {
-		return $.ajax({
-			url: 'http://localhost:3000/search',
-			data: {
-				term: query
-			}
-		});
-	},
-	selectors: {
-		toggler: 'i',
-		value: 'span'
-	},
-	templates: {
-		item: function ( data ) {
-			return Mustache.render(template, data);
-		}
-	}
-});
-```
-
-Callback on item select.
-
-```js
-$('input').autosuggest({
-	select: function ( item, data ) {
-		$(this).addClass('inputClass')
-		item.addClass('itemClass');
-		console.log(data);
-	}
-});
-```
-
-Destroy plugin instance.
-
-```js
-$('input').autosuggest('destroy');
-```
-
 ## Browser support
 
-Tested in IE8+ and all modern browsers.
+Tested in IE9+ and all modern browsers.
+
+## Test
+
+For manual tests, run `npm run test:manual` and open <http://localhost:9000/> in your browser.
 
 ## License
 

@@ -1,0 +1,22 @@
+{
+	"root": true,
+	"extends": [
+		"niksy",
+		"niksy/next",
+		"niksy/browser"
+	],
+	"overrides": [
+		{
+			"files": [
+				"test/manual/webpack.config.js"
+			],
+			"env": {
+				"node": true,
+				"es6": true
+			},
+			"rules": {
+				"no-console": 0
+			}
+		}
+	]
+}
