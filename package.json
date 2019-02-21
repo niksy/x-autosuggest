@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "jquery": "^1.12.4",
-    "throttle-debounce": "^0.1.0"
+    "throttle-debounce": "^2.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
