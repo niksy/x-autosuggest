@@ -1,0 +1,41 @@
+{
+	"presets": [
+		"babel-preset-niksy/next",
+		[
+			"babel-preset-niksy",
+			{
+				"@babel/preset-env": {
+					"loose": true
+				}
+			}
+		]
+	],
+	"plugins": ["@babel/plugin-transform-object-assign"],
+	"env": {
+		"test": {
+			"presets": [
+				[
+					"babel-preset-niksy",
+					{
+						"@babel/preset-env": {
+							"loose": true,
+							"useBuiltIns": "usage",
+							"corejs": 2
+						}
+					}
+				]
+			],
+			"plugins": [
+				[
+					"@babel/plugin-transform-runtime",
+					{
+						"corejs": false,
+						"helpers": true,
+						"regenerator": false,
+						"useESModules": true
+					}
+				]
+			]
+		}
+	}
+}

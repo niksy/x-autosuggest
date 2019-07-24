@@ -1,0 +1,34 @@
+{
+	"root": true,
+	"extends": [
+		"niksy",
+		"niksy/next",
+		"niksy/browser",
+		"prettier"
+	],
+	"plugins": [
+		"prettier",
+		"html"
+	],
+	"settings": {
+		"html/html-extensions": [".svelte"],
+		"html/indent": "0"
+	},
+	"rules": {
+		"prettier/prettier": 1
+	},
+	"overrides": [
+		{
+			"files": [
+				"karma.conf.js"
+			],
+			"env": {
+				"node": true,
+				"es6": true
+			},
+			"rules": {
+				"no-console": 0
+			}
+		}
+	]
+}
