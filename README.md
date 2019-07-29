@@ -10,7 +10,7 @@ Features:
 -   Best accessibility practices baked in
 -   Flexible styling
 
-**[Try it now!](#demo)**
+**[Try it now!](https://codesandbox.io/s/basic-example-mppkz)**
 
 ## Install
 
@@ -25,7 +25,8 @@ functionality.
 
 When user inputs query, autosuggest first checks if query has less than 2
 characters. If it does, no results are returned, otherwise it fetches list of
-countries and maps names to content and value which will be used for input value.
+countries and maps names to content (which is country name wrapped in `b` HTML
+tag) and value which will be used for `input` element value.
 
 When user chooses option, closest `form` element submit event will be triggered.
 
