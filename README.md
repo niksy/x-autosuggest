@@ -181,6 +181,6 @@ MIT © [Ivan Nikolić](http://ivannikolic.com)
 [ci]: https://travis-ci.com/niksy/x-autosuggest
 [ci-img]: https://travis-ci.com/niksy/x-autosuggest.svg?branch=master
 [browserstack]: https://www.browserstack.com/
-[browserstack-img]: https://www.browserstack.com/automate/badge.svg?badge_key=<badge_key>
+[browserstack-img]: https://www.browserstack.com/automate/badge.svg?badge_key=Z1RjSksvWk5NejNIMkM4bUdwVU80QUxBY1ltWllWZEUyaTllT1JZczBRUT0tLVdYYU9YZUVsSHk2ejJWKzB3bzJjYXc9PQ==--5b6ae6e829f2960b2c5d36b10857d9497c25e70e
 
 <!-- prettier-ignore-end -->
