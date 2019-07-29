@@ -281,6 +281,7 @@ it('should hide results if input is disabled', async function() {
 		])
 	);
 
+	element.disabled = false;
 	instance.destroy();
 });
 
@@ -290,10 +291,13 @@ it('should display placeholder elements', async function() {
 	const instance = fn(element, {
 		async onQueryInput() {
 			const data = await fetchData();
-			return [].concat(data, {
-				content: '<hr />',
-				value: null
-			});
+			return [
+				...data,
+				{
+					content: '<hr />',
+					value: null
+				}
+			];
 		}
 	});
 
