@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Fixed
+
+- Initial element value should be reused
+
 ## [1.0.1][] - 2019-09-09
 
 ### Fixed

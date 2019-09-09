@@ -53,6 +53,15 @@ function moveCursorToEnd(element) {
 	}
 }
 
+function moveCursorToEndSideEffect(input) {
+	const id = requestAnimationFrame(() => {
+		moveCursorToEnd(input);
+	});
+	return () => {
+		cancelAnimationFrame(id);
+	};
+}
+
 let count = 0;
 
 export default {
@@ -84,6 +93,10 @@ export default {
 				observer.disconnect();
 			};
 		});
+
+		this.sideEffects.add(() => {
+			return moveCursorToEndSideEffect(this.refs.input);
+		});
 	},
 	ondestroy() {
 		this.refs.input.removeAttribute('autocomplete');
@@ -93,12 +106,7 @@ export default {
 		if (changed.position && current.direction === KEY_UP) {
 			this.sideEffects.removeAll();
 			this.sideEffects.add(() => {
-				const id = requestAnimationFrame(() => {
-					moveCursorToEnd(this.refs.input);
-				});
-				return () => {
-					cancelAnimationFrame(id);
-				};
+				return moveCursorToEndSideEffect(this.refs.input);
 			});
 		}
 	},
@@ -166,7 +174,10 @@ export default {
 			 * Hide list when:
 			 *   * Mouse button isn’t clicked inside results element or input element
 			 */
-			if (isMouseClick(keycode) && !this.refs.container.contains(target)) {
+			if (
+				isMouseClick(keycode) &&
+				!this.refs.container.contains(target)
+			) {
 				const { fixedValue } = this.get();
 				this.set({
 					value: fixedValue,
@@ -182,7 +193,13 @@ export default {
 		},
 		handleKeydownEvent(event) {
 			const keycode = event.which;
-			const { isOpened, onOptionSelect, position, results, fixedValue } = this.get();
+			const {
+				isOpened,
+				onOptionSelect,
+				position,
+				results,
+				fixedValue
+			} = this.get();
 
 			switch (keycode) {
 				case KEY_UP:

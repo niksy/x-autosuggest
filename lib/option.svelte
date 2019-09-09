@@ -2,19 +2,19 @@
 import manageSideEffects from 'manage-side-effects';
 
 export default {
-	oncreate () {
+	oncreate() {
 		this.sideEffects = manageSideEffects();
 	},
-	onupdate ({ changed, current, previous }) {
+	onupdate({ changed, current, previous }) {
 		const { value, decorateOption } = current;
-		if ( changed.content && value !== null ) {
+		if (changed.content && value !== null) {
 			this.sideEffects.removeAll();
 			this.sideEffects.add(() => {
 				return decorateOption(this.refs.option);
 			});
 		}
 	},
-	ondestroy () {
+	ondestroy() {
 		this.sideEffects.removeAll();
 	}
 };

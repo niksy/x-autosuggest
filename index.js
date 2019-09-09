@@ -8,10 +8,14 @@ export default (element, options = {}) => {
 		onQueryInput = (query) => Promise.resolve([])
 	} = options;
 
+	const value = element.value;
+
 	const instance = new Component({
 		target: element.parentElement,
 		elementToHandle: element,
 		data: {
+			value: value,
+			fixedValue: value,
 			decorateOption,
 			decorateInputEvent,
 			onOptionSelect,

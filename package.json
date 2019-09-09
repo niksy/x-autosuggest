@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "rollup --config rollup.config.js",
-    "lint": "eslint '{index,lib/**/*,test/**/*}.js'",
+    "lint": "eslint '{index,lib/**/*,test/**/*}.{js,svelte}'",
     "postpublish": "GITHUB_TOKEN=$GITHUB_RELEASE_TOKEN github-release-from-changelog",
     "prepublishOnly": "npm run build",
     "release": "np",
