@@ -5,6 +5,7 @@
 ### Fixed
 
 - Escape key action prevention on `input[type="search"]`
+- Memoization example in docs
 
 ### Changed
 

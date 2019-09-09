@@ -151,8 +151,13 @@ import autosuggest from 'x-autosuggest';
 import memoize from '@f/memoize';
 
 // We cache fetch results based on URL
-const cachedFetch = memoize((url) => {
-	return fetch(url);
+const cachedFetch = memoize(async (url) => {
+    const response = await fetch(url);
+    const json = await response.json();
+    return {
+        ok: response.ok,
+        json: async () => json
+    };
 });
 
 // And then in autosuggest instance options…
