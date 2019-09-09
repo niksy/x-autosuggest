@@ -53,9 +53,9 @@ function moveCursorToEnd(element) {
 	}
 }
 
-function moveCursorToEndSideEffect(input) {
+function moveCursorToEndSideEffect(element) {
 	const id = requestAnimationFrame(() => {
-		moveCursorToEnd(input);
+		moveCursorToEnd(element);
 	});
 	return () => {
 		cancelAnimationFrame(id);

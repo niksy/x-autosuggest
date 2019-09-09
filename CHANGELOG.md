@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Fixed
+
+- Side effect reference
+
 ## [1.1.0][] - 2019-09-09
 
 ### Fixed
