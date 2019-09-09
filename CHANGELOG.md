@@ -6,6 +6,10 @@
 
 - Escape key action prevention on `input[type="search"]`
 
+### Changed
+
+- Blur event uses user input value and hides dropdown list
+
 ## [1.0.0][] - 2019-07-29
 
 ### Added

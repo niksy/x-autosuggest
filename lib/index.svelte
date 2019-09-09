@@ -233,6 +233,14 @@ export default {
 			});
 			this.getData(value);
 		},
+		handleBlurEvent(event) {
+			const { fixedValue } = this.get();
+			this.set({
+				value: fixedValue,
+				position: null,
+				isOpened: false
+			});
+		},
 		getData(query) {
 			const { onQueryInput } = this.get();
 			this.set({ loading: true });
@@ -333,6 +341,7 @@ export default {
 		on:inputdecorated="handleInputEvent(event)"
 		on:keyup="handleKeyupEvent(event)"
 		on:keydown="handleKeydownEvent(event)"
+		on:blur="handleBlurEvent(event)"
 		autocomplete={isComponentActive ? "off" : null}
 		bind:value="value"
 		class:x-Autosuggest-input="isComponentActive"
