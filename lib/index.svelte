@@ -164,13 +164,9 @@ export default {
 
 			/**
 			 * Hide list when:
-			 *   * Escape key is pressed and cursor is inside input element
 			 *   * Mouse button isn’t clicked inside results element or input element
 			 */
-			if (
-				(keycode === KEY_ESCAPE && target === this.refs.input) ||
-				(isMouseClick(keycode) && !this.refs.container.contains(target))
-			) {
+			if (isMouseClick(keycode) && !this.refs.container.contains(target)) {
 				const { fixedValue } = this.get();
 				this.set({
 					value: fixedValue,
@@ -186,7 +182,7 @@ export default {
 		},
 		handleKeydownEvent(event) {
 			const keycode = event.which;
-			const { isOpened, onOptionSelect, position, results } = this.get();
+			const { isOpened, onOptionSelect, position, results, fixedValue } = this.get();
 
 			switch (keycode) {
 				case KEY_UP:
@@ -196,6 +192,16 @@ export default {
 						direction: keycode
 					});
 					this.navigate();
+					break;
+
+				case KEY_ESCAPE:
+					// We need to prevent default action for `[type="search"]`
+					event.preventDefault();
+					this.set({
+						value: fixedValue,
+						position: null,
+						isOpened: false
+					});
 					break;
 
 				case KEY_RETURN:
@@ -320,7 +326,7 @@ export default {
 };
 </script>
 
-<svelte:document on:click="handleGlobalEvent(event)" on:keydown="handleGlobalEvent(event)" />
+<svelte:document on:click="handleGlobalEvent(event)" />
 <div ref:container class={namespace} class:is-opened="isOpened">
 	<input
 		ref:input

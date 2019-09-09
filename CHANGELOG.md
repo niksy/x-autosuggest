@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Fixed
+
+- Escape key action prevention on `input[type="search"]`
+
 ## [1.0.0][] - 2019-07-29
 
 ### Added
