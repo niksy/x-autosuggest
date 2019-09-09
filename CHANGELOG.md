@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [1.0.1][] - 2019-09-09
+
 ### Fixed
 
 - Escape key action prevention on `input[type="search"]`
@@ -18,5 +20,6 @@
 - Initial implementation
 
 
-[Unreleased]: https://github.com/niksy/x-autosuggest/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/niksy/x-autosuggest/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/niksy/x-autosuggest/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/niksy/x-autosuggest/tree/v1.0.0
