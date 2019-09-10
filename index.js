@@ -4,7 +4,7 @@ export default (element, options = {}) => {
 	const {
 		decorateOption = (node) => {},
 		decorateInputEvent = (listener) => listener,
-		onOptionSelect = (event, value) => {},
+		onOptionSelect = (event, value, meta) => {},
 		onQueryInput = (query) => Promise.resolve([])
 	} = options;
 

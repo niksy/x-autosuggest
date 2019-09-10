@@ -130,12 +130,19 @@ export default {
 		hasResults: ({ results }) => results.length !== 0,
 		preparedResults: ({ results }) => {
 			return results.map((result, index) => {
+				let id = `${result.content}`;
+
+				if (result.value === null) {
+					id = `null${index}${id}`;
+				} else {
+					id = `${result.value}${id}`;
+				}
+				if (typeof result.meta !== 'undefined') {
+					id = `${JSON.stringify(result.meta)}${id}`;
+				}
 				return {
 					...result,
-					id:
-						result.value === null
-							? `null${index}${result.content}`
-							: `${result.value}${result.content}`
+					id: id
 				};
 			});
 		}
@@ -186,10 +193,10 @@ export default {
 				});
 			}
 		},
-		handlePointerSelect(event, value, selectedIndex) {
+		handlePointerSelect(event, value, meta, selectedIndex) {
 			const { results, onOptionSelect } = this.get();
 			this.setValue(value);
-			onOptionSelect(event, value);
+			onOptionSelect(event, value, meta);
 		},
 		handleKeydownEvent(event) {
 			const keycode = event.which;
@@ -225,7 +232,7 @@ export default {
 					if (isOpened && position !== null) {
 						const result = results[position];
 						this.setValue(result.value);
-						onOptionSelect(event, result.value);
+						onOptionSelect(event, result.value, result.meta);
 					}
 					break;
 			}
@@ -385,7 +392,7 @@ export default {
 				isActive={result.active}
 				value={result.value}
 				decorateOption={decorateOption}
-				on:click="handlePointerSelect(event, result.value, index)"
+				on:click="handlePointerSelect(event, result.value, result.meta, index)"
 			/>
 			{/each}
 		</ul>

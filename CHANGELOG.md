@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Added
+
+- Support for option meta information
+
 ## [1.1.1][] - 2019-09-09
 
 ### Fixed

@@ -12,11 +12,19 @@ import {
 	nodesExist
 } from './util';
 
-function fetchData() {
+function fetchData(options = {}) {
+	const {
+		addMeta = false
+	} = options ;
 	const data = ['bonnie', 'brutus', 'elvis'].map((value) => {
 		return {
 			content: `<a href="${value}">${value}</a>`,
-			value: value
+			value: value,
+			...(addMeta ? {
+				meta: {
+					value: value
+				}
+			} : {})
 		};
 	});
 	return Promise.resolve(data);
@@ -182,7 +190,7 @@ it('should handle option select', async function() {
 	const instance = fn(element, {
 		onOptionSelect: spy,
 		onQueryInput() {
-			return fetchData();
+			return fetchData({ addMeta: true });
 		}
 	});
 
@@ -199,6 +207,7 @@ it('should handle option select', async function() {
 	);
 	assert.ok(spy.called);
 	assert.equal(spy.firstCall.args[1], 'bonnie');
+	assert.deepEqual(spy.firstCall.args[2], { value: 'bonnie' });
 
 	instance.destroy();
 });

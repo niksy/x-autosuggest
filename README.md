@@ -85,7 +85,7 @@ query, fetching data and mapping results to valid format here.
 
 Return value should either be empty array (when you don’t want to display
 results or don’t have results to display) or array of objects, where each object
-contains two properties:
+contains following properties:
 
 ###### content
 
@@ -102,6 +102,13 @@ Value used for `input` element value.
 If it’s `null` option element will be considered as placeholder element and
 won’t be used as option. Useful if you want to have dividers between your
 options, or if you need to group option elements with headings.
+
+###### meta
+
+Type: `*`
+
+Additional (meta) information for option. Useful if you need to provide
+additional complex information for option.
 
 ##### decorateOption
 
@@ -128,10 +135,13 @@ functionality such as debounce or throttle of events.
 ##### onOptionSelect
 
 Type: `Function`  
-Default: `(event, value) => {}`
+Default: `(event, value, meta) => {}`
 
-Callback to run when option is selected. It receives two arguments: event object
-of triggered event and value of triggered option.
+Callback to run when option is selected. It receives following arguments:
+
+-   Event object of triggered event
+-   Value of triggered option
+-   Additional (meta) information of triggered option
 
 This callback is useful for performing actions such as triggering form submit.
 
@@ -152,12 +162,12 @@ import memoize from '@f/memoize';
 
 // We cache fetch results based on URL
 const cachedFetch = memoize(async (url) => {
-    const response = await fetch(url);
-    const json = await response.json();
-    return {
-        ok: response.ok,
-        json: async () => json
-    };
+	const response = await fetch(url);
+	const json = await response.json();
+	return {
+		ok: response.ok,
+		json: async () => json
+	};
 });
 
 // And then in autosuggest instance options…
