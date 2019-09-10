@@ -177,10 +177,6 @@ export default {
 			const keycode = event.which;
 			const target = event.target;
 
-			/**
-			 * Hide list when:
-			 *   * Mouse button isn’t clicked inside results element or input element
-			 */
 			if (
 				isMouseClick(keycode) &&
 				!this.refs.container.contains(target)
@@ -239,7 +235,6 @@ export default {
 		},
 		handleKeyupEvent(event) {
 			const keycode = event.which;
-			const { onInput } = this.get();
 
 			// If it’s not standard alphanumeric key
 			if (isBlacklistedKey(keycode) || isWhitelistedKey(keycode)) {
@@ -259,6 +254,10 @@ export default {
 		},
 		handleBlurEvent(event) {
 			const { fixedValue } = this.get();
+			const target = event.relatedTarget;
+			if (target && this.refs.container.contains(target)) {
+				return;
+			}
 			this.set({
 				value: fixedValue,
 				position: null,

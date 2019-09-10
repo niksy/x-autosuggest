@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Fixed
+
+- Blur event handling when selecting option
+
 ## [1.2.0][] - 2019-09-10
 
 ### Added
