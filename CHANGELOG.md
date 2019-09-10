@@ -5,6 +5,7 @@
 ### Added
 
 - Support for option meta information
+- Test for blur event
 
 ## [1.1.1][] - 2019-09-09
 

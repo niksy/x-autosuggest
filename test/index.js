@@ -9,22 +9,23 @@ import {
 	pressEscape,
 	pressEnter,
 	mouseClick,
-	nodesExist
+	nodesExist,
+	blurElement
 } from './util';
 
 function fetchData(options = {}) {
-	const {
-		addMeta = false
-	} = options ;
+	const { addMeta = false } = options;
 	const data = ['bonnie', 'brutus', 'elvis'].map((value) => {
 		return {
 			content: `<a href="${value}">${value}</a>`,
 			value: value,
-			...(addMeta ? {
-				meta: {
-					value: value
-				}
-			} : {})
+			...(addMeta
+				? {
+						meta: {
+							value: value
+						}
+				  }
+				: {})
 		};
 	});
 	return Promise.resolve(data);
@@ -161,7 +162,7 @@ it('should handle keyboard events for closing', async function() {
 	instance.destroy();
 });
 
-it('should handle mouse events for closing', async function() {
+it('should handle blur event for closing', async function() {
 	const element = document.querySelector('.Input');
 
 	const instance = fn(element, {
@@ -176,9 +177,31 @@ it('should handle mouse events for closing', async function() {
 
 	assert.ok(nodesExist(['#x-Autosuggest-results-3[aria-expanded="true"]']));
 
-	mouseClick(document.body);
+	await blurElement(element);
 
 	assert.ok(nodesExist(['#x-Autosuggest-results-3[aria-expanded="false"]']));
+
+	instance.destroy();
+});
+
+it('should handle mouse events for closing', async function() {
+	const element = document.querySelector('.Input');
+
+	const instance = fn(element, {
+		onQueryInput() {
+			return fetchData();
+		}
+	});
+
+	await inputCharacter(element);
+
+	goDown(element);
+
+	assert.ok(nodesExist(['#x-Autosuggest-results-4[aria-expanded="true"]']));
+
+	mouseClick(document.body);
+
+	assert.ok(nodesExist(['#x-Autosuggest-results-4[aria-expanded="false"]']));
 
 	instance.destroy();
 });
@@ -201,7 +224,7 @@ it('should handle option select', async function() {
 
 	assert.ok(
 		nodesExist([
-			'#x-Autosuggest-results-4[aria-expanded="false"]',
+			'#x-Autosuggest-results-5[aria-expanded="false"]',
 			['.x-Autosuggest-input', (node) => node.value === 'bonnie']
 		])
 	);
@@ -230,7 +253,7 @@ it('should handle decorated option', async function() {
 
 	assert.ok(
 		nodesExist([
-			'#x-Autosuggest-item-5-0.is-decorated[aria-selected="true"]'
+			'#x-Autosuggest-item-6-0.is-decorated[aria-selected="true"]'
 		])
 	);
 
@@ -276,7 +299,7 @@ it('should hide results if input is disabled', async function() {
 
 	assert.ok(
 		nodesExist([
-			'#x-Autosuggest-results-7[role="listbox"][aria-expanded="true"]'
+			'#x-Autosuggest-results-8[role="listbox"][aria-expanded="true"]'
 		])
 	);
 
@@ -286,7 +309,7 @@ it('should hide results if input is disabled', async function() {
 
 	assert.ok(
 		nodesExist([
-			'#x-Autosuggest-results-7[role="listbox"][aria-expanded="false"]'
+			'#x-Autosuggest-results-8[role="listbox"][aria-expanded="false"]'
 		])
 	);
 
@@ -316,10 +339,10 @@ it('should display placeholder elements', async function() {
 
 	assert.ok(
 		nodesExist([
-			'#x-Autosuggest-item-8-0[aria-selected="true"]',
-			'#x-Autosuggest-item-8-1[aria-selected="false"]',
-			'#x-Autosuggest-item-8-2[aria-selected="false"]',
-			'#x-Autosuggest-results-8 li:last-child hr'
+			'#x-Autosuggest-item-9-0[aria-selected="true"]',
+			'#x-Autosuggest-item-9-1[aria-selected="false"]',
+			'#x-Autosuggest-item-9-2[aria-selected="false"]',
+			'#x-Autosuggest-results-9 li:last-child hr'
 		])
 	);
 

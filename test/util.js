@@ -45,6 +45,11 @@ function nodesExist(selectors) {
 		.every(Boolean);
 }
 
+async function blurElement(element) {
+	element.blur();
+	await nextFrame();
+}
+
 export {
 	nextFrame,
 	inputCharacter,
@@ -53,5 +58,6 @@ export {
 	pressEscape,
 	pressEnter,
 	mouseClick,
-	nodesExist
+	nodesExist,
+	blurElement
 };
