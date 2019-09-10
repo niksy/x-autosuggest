@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [1.2.1][] - 2019-09-10
+
 ### Fixed
 
 - Blur event handling when selecting option
@@ -47,7 +49,8 @@
 - Initial implementation
 
 
-[Unreleased]: https://github.com/niksy/x-autosuggest/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/niksy/x-autosuggest/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/niksy/x-autosuggest/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/niksy/x-autosuggest/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/niksy/x-autosuggest/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/niksy/x-autosuggest/compare/v1.0.1...v1.1.0

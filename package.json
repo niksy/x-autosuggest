@@ -1,6 +1,6 @@
 {
   "name": "x-autosuggest",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Autosuggest results based on input.",
   "main": "index.cjs.js",
   "module": "index.esm.js",
