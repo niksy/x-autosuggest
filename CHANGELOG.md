@@ -6,6 +6,10 @@
 
 - Blur event handling when selecting option
 
+### Removed
+
+- Unecessary `keyup` event handler
+
 ## [1.2.0][] - 2019-09-10
 
 ### Added

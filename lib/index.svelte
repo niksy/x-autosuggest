@@ -1,45 +1,15 @@
 <script>
 import manageSideEffects from 'manage-side-effects';
 import {
-	KEY_SHIFT,
-	KEY_CONTROL,
-	KEY_ALT,
 	KEY_RETURN,
 	KEY_ESCAPE,
 	KEY_UP,
-	KEY_RIGHT,
 	KEY_DOWN,
-	KEY_LEFT,
-	KEY_CAPS_LOCK,
-	KEY_LEFT_CMD,
-	KEY_RIGHT_CMD,
-	KEY_TAB
 } from 'keycode-js';
 import Option from './option.svelte';
 
 function isMouseClick(keycode) {
 	return keycode >= 1 && keycode <= 3;
-}
-
-function isBlacklistedKey(keycode) {
-	return [KEY_TAB, KEY_ESCAPE].indexOf(keycode) !== -1;
-}
-
-function isWhitelistedKey(keycode) {
-	return (
-		[
-			KEY_SHIFT,
-			KEY_CONTROL,
-			KEY_ALT,
-			KEY_CAPS_LOCK,
-			KEY_LEFT,
-			KEY_UP,
-			KEY_RIGHT,
-			KEY_DOWN,
-			KEY_LEFT_CMD,
-			KEY_RIGHT_CMD
-		].indexOf(keycode) !== -1
-	);
 }
 
 function moveCursorToEnd(element) {
@@ -233,18 +203,6 @@ export default {
 					break;
 			}
 		},
-		handleKeyupEvent(event) {
-			const keycode = event.which;
-
-			// If it’s not standard alphanumeric key
-			if (isBlacklistedKey(keycode) || isWhitelistedKey(keycode)) {
-				// Close if we are using non-whitelisted key
-				if (!isWhitelistedKey(keycode)) {
-					const { fixedValue } = this.get();
-					this.setValue(fixedValue);
-				}
-			}
-		},
 		handleInputEvent(event) {
 			const { value } = this.get();
 			this.set({
@@ -362,7 +320,6 @@ export default {
 	<input
 		ref:input
 		on:inputdecorated="handleInputEvent(event)"
-		on:keyup="handleKeyupEvent(event)"
 		on:keydown="handleKeydownEvent(event)"
 		on:blur="handleBlurEvent(event)"
 		autocomplete={isComponentActive ? "off" : null}
