@@ -143,26 +143,26 @@ export default {
 				}))
 			});
 		},
-		handleGlobalEvent(event) {
-			const keycode = event.which;
-			const target = event.target;
-
-			if (
-				isMouseClick(keycode) &&
-				!this.refs.container.contains(target)
-			) {
-				const { fixedValue } = this.get();
-				this.set({
-					value: fixedValue,
-					position: null,
-					isOpened: false
-				});
-			}
-		},
 		handlePointerSelect(event, value, meta, selectedIndex) {
 			const { results, onOptionSelect } = this.get();
 			this.setValue(value);
 			onOptionSelect(event, value, meta);
+		},
+		handleGlobalEvent(event) {
+			const { fixedValue } = this.get();
+			const keycode = event.which;
+			const target = event.target;
+			if (
+				isMouseClick(keycode) &&
+				this.refs.container.contains(target)
+			) {
+				return;
+			}
+			this.set({
+				value: fixedValue,
+				position: null,
+				isOpened: false
+			});
 		},
 		handleKeydownEvent(event) {
 			const keycode = event.which;
@@ -321,7 +321,7 @@ export default {
 		ref:input
 		on:inputdecorated="handleInputEvent(event)"
 		on:keydown="handleKeydownEvent(event)"
-		on:blur="handleBlurEvent(event)"
+		on:focusout="handleBlurEvent(event)"
 		autocomplete={isComponentActive ? "off" : null}
 		bind:value="value"
 		class:x-Autosuggest-input="isComponentActive"
