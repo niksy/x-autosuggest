@@ -116,7 +116,7 @@ export default {
 		return {
 			namespace: 'x-Autosuggest',
 			value: '',
-			fixedValue: '',
+			fixedValue: '', // Original user input value
 			isOpened: false,
 			loading: false,
 			id: id,
