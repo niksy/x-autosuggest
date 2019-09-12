@@ -1,11 +1,6 @@
 <script>
 import manageSideEffects from 'manage-side-effects';
-import {
-	KEY_RETURN,
-	KEY_ESCAPE,
-	KEY_UP,
-	KEY_DOWN,
-} from 'keycode-js';
+import { KEY_RETURN, KEY_ESCAPE, KEY_UP, KEY_DOWN } from 'keycode-js';
 import Option from './option.svelte';
 
 function isMouseClick(keycode) {
@@ -23,10 +18,8 @@ function moveCursorToEnd(element) {
 	}
 }
 
-function moveCursorToEndSideEffect(element) {
-	const id = requestAnimationFrame(() => {
-		moveCursorToEnd(element);
-	});
+function rAFSideEffect(callback) {
+	const id = requestAnimationFrame(callback);
 	return () => {
 		cancelAnimationFrame(id);
 	};
@@ -42,30 +35,36 @@ export default {
 		this.sideEffects = manageSideEffects();
 
 		this.sideEffects.add(() => {
-			const observer = new MutationObserver((mutations) => {
-				mutations.forEach((mutation) => {
-					if (mutation.attributeName === 'disabled') {
-						if (mutation.oldValue === null) {
-							this.set({
-								isOpened: false
-							});
-						}
-					}
+			return rAFSideEffect(() => {
+				this.sideEffects.add(() => {
+					const observer = new MutationObserver((mutations) => {
+						mutations.forEach((mutation) => {
+							if (mutation.attributeName === 'disabled') {
+								if (mutation.oldValue === null) {
+									this.set({
+										isOpened: false
+									});
+								}
+							}
+						});
+					});
+					observer.observe(this.refs.input, {
+						attributes: true,
+						attributeFilter: ['disabled'],
+						attributeOldValue: true
+					});
+
+					return () => {
+						observer.disconnect();
+					};
+				});
+
+				this.sideEffects.add(() => {
+					return rAFSideEffect(() =>
+						moveCursorToEnd(this.refs.input)
+					);
 				});
 			});
-			observer.observe(this.refs.input, {
-				attributes: true,
-				attributeFilter: ['disabled'],
-				attributeOldValue: true
-			});
-
-			return () => {
-				observer.disconnect();
-			};
-		});
-
-		this.sideEffects.add(() => {
-			return moveCursorToEndSideEffect(this.refs.input);
 		});
 	},
 	ondestroy() {
@@ -76,7 +75,7 @@ export default {
 		if (changed.position && current.direction === KEY_UP) {
 			this.sideEffects.removeAll();
 			this.sideEffects.add(() => {
-				return moveCursorToEndSideEffect(this.refs.input);
+				return rAFSideEffect(() => moveCursorToEnd(this.refs.input));
 			});
 		}
 	},
@@ -132,7 +131,11 @@ export default {
 			return {
 				destroy() {
 					node.removeEventListener('input', listener, false);
-					node.removeEventListener('input', fixedValueListener, false);
+					node.removeEventListener(
+						'input',
+						fixedValueListener,
+						false
+					);
 				}
 			};
 		}
@@ -160,10 +163,7 @@ export default {
 			const { fixedValue } = this.get();
 			const keycode = event.which;
 			const target = event.target;
-			if (
-				isMouseClick(keycode) &&
-				this.refs.container.contains(target)
-			) {
+			if (isMouseClick(keycode) && this.refs.container.contains(target)) {
 				return;
 			}
 			this.set({
@@ -193,7 +193,6 @@ export default {
 					break;
 
 				case KEY_ESCAPE:
-
 					// We want to prevent default action for `[type="search"]`
 					event.preventDefault();
 

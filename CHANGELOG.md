@@ -5,6 +5,7 @@
 ### Fixed
 
 - Adjust fixed value regardless of decorated `input` event
+- Handle input reference on next tick to handle early undefined DOM element reference
 
 ## [1.3.0][] - 2019-09-12
 
