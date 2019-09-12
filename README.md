@@ -108,7 +108,9 @@ options, or if you need to group option elements with headings.
 Type: `*`
 
 Additional (meta) information for option. Useful if you need to provide
-additional complex information for option.
+additional complex information for option, e.g. `input` element value is defined
+with `value` option, but if you need to update additional element (e.g. hidden
+input) with ID of option, you can use meta information for that.
 
 ##### decorateOption
 
