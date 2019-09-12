@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Fixed
+
+- Adjust fixed value regardless of decorated `input` event
+
 ## [1.3.0][] - 2019-09-12
 
 ### Changed

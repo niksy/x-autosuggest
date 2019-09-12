@@ -121,10 +121,18 @@ export default {
 		inputdecorated(node, callback) {
 			const { decorateInputEvent } = this.get();
 			const listener = decorateInputEvent(callback);
+			const fixedValueListener = (event) => {
+				const value = event.target.value;
+				this.set({
+					fixedValue: value
+				});
+			};
 			node.addEventListener('input', listener, false);
+			node.addEventListener('input', fixedValueListener, false);
 			return {
 				destroy() {
 					node.removeEventListener('input', listener, false);
+					node.removeEventListener('input', fixedValueListener, false);
 				}
 			};
 		}
@@ -211,9 +219,6 @@ export default {
 		},
 		handleInputEvent(event) {
 			const { value } = this.get();
-			this.set({
-				fixedValue: value
-			});
 			this.getData(value);
 		},
 		handleBlurEvent(event) {
