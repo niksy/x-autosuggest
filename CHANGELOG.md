@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Changed
+
+- Prevent default action if `Enter` key is pressed when selecting option (this avoids submitting parent `form` element)
+
 ## [1.2.2][] - 2019-09-10
 
 ### Fixed

@@ -185,8 +185,10 @@ export default {
 					break;
 
 				case KEY_ESCAPE:
-					// We need to prevent default action for `[type="search"]`
+
+					// We want to prevent default action for `[type="search"]`
 					event.preventDefault();
+
 					this.set({
 						value: fixedValue,
 						position: null,
@@ -197,6 +199,10 @@ export default {
 				case KEY_RETURN:
 					if (isOpened && position !== null) {
 						const result = results[position];
+
+						// We want to prevent default action so `form` elements can be handled
+						event.preventDefault();
+
 						this.setValue(result.value);
 						onOptionSelect(event, result.value, result.meta);
 					}
