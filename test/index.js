@@ -359,5 +359,18 @@ it('should handle destroy and element reusability', function() {
 
 	instance.destroy();
 
-	assert.ok(nodesExist(['input:not(.x-Autosuggest-input)']));
+	assert.ok(nodesExist(['input:not(.x-Autosuggest-input)', '.Input']));
+	assert.ok(element === document.querySelector('.Input'));
+});
+
+it('should use additional HTML class namespace', function() {
+	const element = document.querySelector('.Input');
+
+	const instance = fn(element, {
+		htmlClassNamespace: 'sydney'
+	});
+
+	assert.ok(nodesExist(['.sydney-input']));
+
+	instance.destroy();
 });

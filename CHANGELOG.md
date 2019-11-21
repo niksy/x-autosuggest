@@ -2,6 +2,10 @@
 
 ## [Unreleased][]
 
+### Added
+
+- Support for additional HTML class namespace
+
 ## [1.3.1][] - 2019-09-12
 
 ### Fixed

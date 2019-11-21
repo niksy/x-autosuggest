@@ -2,6 +2,7 @@ import Component from './lib/index.svelte';
 
 export default (element, options = {}) => {
 	const {
+		htmlClassNamespace = '',
 		decorateOption = (node) => {},
 		decorateInputEvent = (listener) => listener,
 		onOptionSelect = (event, value, meta) => {},
@@ -16,6 +17,8 @@ export default (element, options = {}) => {
 		data: {
 			value: value,
 			fixedValue: value,
+			elementClassName: element.className,
+			htmlClassNamespace,
 			decorateOption,
 			decorateInputEvent,
 			onOptionSelect,

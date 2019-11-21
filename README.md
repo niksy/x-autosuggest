@@ -147,6 +147,15 @@ Callback to run when option is selected. It receives following arguments:
 
 This callback is useful for performing actions such as triggering form submit.
 
+##### htmlClassNamespace
+
+Type: `string`  
+Default: ` `
+
+HTML class namespace in addition to default one (`x-Autosuggest`).
+
+Useful if you want to create additional styling/functionality selector hook.
+
 ### instance.destroy()
 
 Destroy instance.

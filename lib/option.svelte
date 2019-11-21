@@ -23,8 +23,8 @@ export default {
 {#if value !== null}
 <li
 	ref:option
-	id={`${namespace}-item-${id}-${index}`}
-	class={`${namespace}-item`}
+	id={`${identifierNamespace.item}-${id}-${index}`}
+	class={classNames.item}
 	class:is-selected="isActive"
 	role="option"
 	aria-selected={isActive ? 'true' : 'false'}

@@ -25,6 +25,22 @@ function rAFSideEffect(callback) {
 	};
 }
 
+/**
+ * @param  {string[]} namespaces
+ * @param  {string} suffix
+ *
+ * @returns {string}
+ */
+function createElementNamespace(namespaces, suffix) {
+	return namespaces
+		.filter(
+			(namespace) =>
+				(typeof namespace === 'undefined' ? '' : namespace) !== ''
+		)
+		.map((namespace) => `${namespace}${suffix}`)
+		.join(' ');
+}
+
 let count = 0;
 
 export default {
@@ -96,6 +112,26 @@ export default {
 		};
 	},
 	computed: {
+		identifierNamespace({ namespace }) {
+			const namespaces = [namespace];
+			return {
+				container: createElementNamespace(namespaces, ''),
+				input: createElementNamespace(namespaces, '-input'),
+				results: createElementNamespace(namespaces, '-results'),
+				list: createElementNamespace(namespaces, '-list'),
+				item: createElementNamespace(namespaces, '-item')
+			};
+		},
+		classNames({ namespace, htmlClassNamespace }) {
+			const namespaces = [namespace, htmlClassNamespace];
+			return {
+				container: createElementNamespace(namespaces, ''),
+				input: createElementNamespace(namespaces, '-input'),
+				results: createElementNamespace(namespaces, '-results'),
+				list: createElementNamespace(namespaces, '-list'),
+				item: createElementNamespace(namespaces, '-item')
+			};
+		},
 		hasResults: ({ results }) => results.length !== 0,
 		preparedResults: ({ results }) => {
 			return results.map((result, index) => {
@@ -326,7 +362,7 @@ export default {
 </script>
 
 <svelte:document on:click="handleGlobalEvent(event)" />
-<div ref:container class={namespace} class:is-opened="isOpened">
+<div ref:container class={classNames.container} class:is-opened="isOpened">
 	<input
 		ref:input
 		on:inputdecorated="handleInputEvent(event)"
@@ -334,24 +370,25 @@ export default {
 		on:focusout="handleBlurEvent(event)"
 		autocomplete={isComponentActive ? "off" : null}
 		bind:value="value"
-		class:x-Autosuggest-input="isComponentActive"
+		class={`${elementClassName}${isComponentActive ? ` ${classNames.input}` : ''}`}
 		role={isComponentActive ? "combobox" : null}
 		aria-autocomplete={isComponentActive ? "list" : null}
-		aria-owns={isComponentActive && hasResults ? `${namespace}-results-${id}` : null}
-		aria-activedescendant={isComponentActive ? (position !== null ? `${namespace}-item-${id}-${position}` : null) : null}
+		aria-owns={isComponentActive && hasResults ? `${identifierNamespace.results}-${id}` : null}
+		aria-activedescendant={isComponentActive ? (position !== null ? `${identifierNamespace.item}-${id}-${position}` : null) : null}
 	/>
 	{#if hasResults}
 	<div
-		id={`${namespace}-results-${id}`}
+		id={`${identifierNamespace.results}-${id}`}
 		role="listbox"
 		aria-expanded={isOpened ? 'true' : 'false'}
-		class={`${namespace}-results`}
+		class={classNames.results}
 		class:is-opened="isOpened"
 	>
-		<ul class={`${namespace}-list`}>
+		<ul class={classNames.list}>
 			{#each preparedResults as result, index (result.id)}
 			<Option
-				namespace={namespace}
+				identifierNamespace={identifierNamespace}
+				classNames={classNames}
 				id={id}
 				index={index}
 				content={result.content}
