@@ -1,4 +1,5 @@
 import simulant from 'simulant';
+import { KEY_DOWN, KEY_UP, KEY_ESCAPE, KEY_RETURN, KEY_A } from 'keycode-js';
 
 function nextFrame() {
 	return new Promise((resolve) => {
@@ -9,24 +10,24 @@ function nextFrame() {
 async function inputCharacter(element) {
 	element.focus();
 	element.value = 'a';
-	simulant.fire(element, 'input', { which: 65 });
+	simulant.fire(element, 'input', { which: KEY_A });
 	await nextFrame();
 }
 
 function goDown(element) {
-	simulant.fire(element, 'keydown', { which: 40 });
+	simulant.fire(element, 'keydown', { which: KEY_DOWN });
 }
 
 function goUp(element) {
-	simulant.fire(element, 'keydown', { which: 38 });
+	simulant.fire(element, 'keydown', { which: KEY_UP });
 }
 
 function pressEscape(element) {
-	simulant.fire(element, 'keydown', { which: 27 });
+	simulant.fire(element, 'keydown', { which: KEY_ESCAPE });
 }
 
 function pressEnter(element) {
-	simulant.fire(element, 'keydown', { which: 13 });
+	simulant.fire(element, 'keydown', { which: KEY_RETURN });
 }
 
 function mouseClick(element) {

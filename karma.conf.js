@@ -14,8 +14,6 @@ let config;
 const local = typeof process.env.CI === 'undefined' || process.env.CI === 'false';
 const port = 9001;
 
-const rollupConfigAliasPlugin = rollupConfig.plugins.find(({ name }, index) => index === 0);
-
 if ( local ) {
 	config = {
 		browsers: ['Chrome'],
@@ -94,7 +92,6 @@ module.exports = function ( baseConfig ) {
 		},
 		rollupPreprocessor: {
 			plugins: [
-				rollupConfigAliasPlugin,
 				nodeBuiltins(),
 				babel({
 					exclude: 'node_modules/**',

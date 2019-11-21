@@ -29,7 +29,7 @@
     "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md"
   },
   "dependencies": {
-    "keycode-js": "^1.0.4",
+    "keycode-js": "^2.0.3",
     "manage-side-effects": "^1.1.0"
   },
   "devDependencies": {
@@ -69,7 +69,6 @@
     "np": "^3.0.4",
     "prettier": "^1.17.0",
     "rollup": "^1.0.0",
-    "rollup-plugin-alias": "^1.5.2",
     "rollup-plugin-babel": "^4.2.0",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-istanbul": "^2.0.1",

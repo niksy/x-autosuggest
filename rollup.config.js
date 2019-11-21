@@ -3,7 +3,6 @@
 const path = require('path');
 const babel = require('rollup-plugin-babel');
 const svelte = require('rollup-plugin-svelte');
-const alias = require('rollup-plugin-alias');
 const babelCore = require('@babel/core');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
@@ -23,9 +22,6 @@ module.exports = {
 		}
 	],
 	plugins: [
-		alias({
-			'keycode-js': require.resolve('keycode-js/lib/KeyCode')
-		}),
 		svelte({
 			legacy: true
 		}),

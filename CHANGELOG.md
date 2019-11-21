@@ -6,6 +6,10 @@
 
 - Support for additional HTML class namespace
 
+### Changed
+
+- `keycode-js` upgrade
+
 ## [1.3.1][] - 2019-09-12
 
 ### Fixed
