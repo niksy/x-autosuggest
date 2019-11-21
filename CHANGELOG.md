@@ -10,6 +10,10 @@
 
 - `keycode-js` upgrade
 
+### Fixed
+
+- Handling rendering edge cases when testing in IE 11
+
 ## [1.3.1][] - 2019-09-12
 
 ### Fixed

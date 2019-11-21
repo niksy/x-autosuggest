@@ -3,7 +3,7 @@ import { KEY_DOWN, KEY_UP, KEY_ESCAPE, KEY_RETURN, KEY_A } from 'keycode-js';
 
 function nextFrame() {
 	return new Promise((resolve) => {
-		setTimeout(resolve, 0);
+		requestAnimationFrame(resolve);
 	});
 }
 
@@ -38,8 +38,9 @@ function nodesExist(selectors) {
 	return selectors
 		.map((selector) => {
 			if (Array.isArray(selector)) {
-				const node = document.querySelector(selector[0]);
-				return selector[1](node);
+				const [selectorQuery, callback] = selector;
+				const node = document.querySelector(selectorQuery);
+				return callback(node);
 			}
 			return document.querySelector(selector);
 		})

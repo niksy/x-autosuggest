@@ -175,6 +175,8 @@ it('should handle blur event for closing', async function() {
 
 	goDown(element);
 
+	await nextFrame();
+
 	assert.ok(nodesExist(['#x-Autosuggest-results-3[aria-expanded="true"]']));
 
 	await blurElement(element);
@@ -297,6 +299,8 @@ it('should hide results if input is disabled', async function() {
 	goDown(element);
 	goDown(element);
 
+	await nextFrame();
+
 	assert.ok(
 		nodesExist([
 			'#x-Autosuggest-results-8[role="listbox"][aria-expanded="true"]'
@@ -314,6 +318,7 @@ it('should hide results if input is disabled', async function() {
 	);
 
 	element.disabled = false;
+
 	instance.destroy();
 });
 
