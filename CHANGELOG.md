@@ -2,6 +2,8 @@
 
 ## [Unreleased][]
 
+## [1.5.0][] - 2020-07-24
+
 ### Added
 
 -   Support for handling focus event on input element
@@ -98,3 +100,5 @@
 [1.1.0]: https://github.com/niksy/x-autosuggest/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/niksy/x-autosuggest/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/niksy/x-autosuggest/tree/v1.0.0
+[unreleased]: https://github.com/niksy/x-autosuggest/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/niksy/x-autosuggest/tree/v1.5.0
