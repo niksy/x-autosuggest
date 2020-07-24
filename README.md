@@ -233,6 +233,6 @@ MIT © [Ivan Nikolić](http://ivannikolic.com)
 [ci]: https://travis-ci.com/niksy/x-autosuggest
 [ci-img]: https://travis-ci.com/niksy/x-autosuggest.svg?branch=master
 [browserstack]: https://www.browserstack.com/
-[browserstack-img]: https://www.browserstack.com/automate/badge.svg?badge_key=Z1RjSksvWk5NejNIMkM4bUdwVU80QUxBY1ltWllWZEUyaTllT1JZczBRUT0tLVdYYU9YZUVsSHk2ejJWKzB3bzJjYXc9PQ==--5b6ae6e829f2960b2c5d36b10857d9497c25e70e
+[browserstack-img]: https://www.browserstack.com/automate/badge.svg?badge_key=a1hxa0RHc2w4UmFrWUZJZXpxSkRhaXc3NG9ramtiUDhmekpqT0QyWGxnQT0tLWV6Vm9PMHdGY1M1M2R4dTBrdTlXZnc9PQ==--4cb914e99c3c484fa816805f81f6e7d3151fbebb
 
 <!-- prettier-ignore-end -->
