@@ -52,6 +52,11 @@ async function blurElement(element) {
 	await nextFrame();
 }
 
+async function focusElement(element) {
+	element.focus();
+	await nextFrame();
+}
+
 export {
 	nextFrame,
 	inputCharacter,
@@ -61,5 +66,6 @@ export {
 	pressEnter,
 	mouseClick,
 	nodesExist,
-	blurElement
+	blurElement,
+	focusElement
 };

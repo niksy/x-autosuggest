@@ -253,23 +253,7 @@ export default {
 			}
 		},
 		handleInputEvent(event) {
-			const { value } = this.get();
-			this.getData(value);
-		},
-		handleBlurEvent(event) {
-			const { fixedValue } = this.get();
-			const target = event.relatedTarget;
-			if (target && this.refs.container.contains(target)) {
-				return;
-			}
-			this.set({
-				value: fixedValue,
-				position: null,
-				isOpened: false
-			});
-		},
-		getData(query) {
-			const { onQueryInput } = this.get();
+			const { value: query, onQueryInput } = this.get();
 			this.set({ loading: true });
 			onQueryInput(query).then((results) => {
 				this.set({
@@ -281,7 +265,39 @@ export default {
 						active: false
 					}))
 				});
-				return results;
+				return null;
+			});
+		},
+		handleFocusEvent(event) {
+			const { results: rawCurrentResults, onFocus } = this.get();
+			const currentResults = rawCurrentResults.map((result) => ({
+				...result,
+				active: false
+			}));
+			this.set({ loading: true, isOpened: currentResults.length !== 0 });
+			onFocus(currentResults).then((results) => {
+				this.set({
+					loading: false,
+					position: null,
+					isOpened: results.length !== 0,
+					results: results.map((result) => ({
+						...result,
+						active: false
+					}))
+				});
+				return null;
+			});
+		},
+		handleBlurEvent(event) {
+			const { fixedValue } = this.get();
+			const target = event.relatedTarget;
+			if (target && this.refs.container.contains(target)) {
+				return;
+			}
+			this.set({
+				value: fixedValue,
+				position: null,
+				isOpened: false
 			});
 		},
 		navigate() {
@@ -367,6 +383,7 @@ export default {
 		ref:input
 		on:inputdecorated="handleInputEvent(event)"
 		on:keydown="handleKeydownEvent(event)"
+		on:focusin="handleFocusEvent(event)"
 		on:focusout="handleBlurEvent(event)"
 		autocomplete={isComponentActive ? "off" : null}
 		bind:value="value"

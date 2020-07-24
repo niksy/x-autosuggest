@@ -10,7 +10,8 @@ import {
 	pressEnter,
 	mouseClick,
 	nodesExist,
-	blurElement
+	blurElement,
+	focusElement
 } from './util';
 
 function fetchData(options = {}) {
@@ -376,6 +377,35 @@ it('should use additional HTML class namespace', function() {
 	});
 
 	assert.ok(nodesExist(['.sydney-input']));
+
+	instance.destroy();
+});
+
+it('should handle input focus', async function() {
+	const element = document.querySelector('.Input');
+
+	const instance = fn(element, {
+		async onFocus(results) {
+			return results;
+		},
+		onQueryInput() {
+			return fetchData();
+		}
+	});
+
+	await inputCharacter(element);
+	await blurElement(element);
+	await focusElement(element);
+
+	assert.ok(
+		nodesExist([
+			'.x-Autosuggest-input[autocomplete="off"][aria-autocomplete="list"][aria-owns="x-Autosuggest-results-12"]:not(aria-activedescendant)',
+			'#x-Autosuggest-results-12[role="listbox"][aria-expanded="true"]',
+			'#x-Autosuggest-item-12-0[role="option"][aria-selected="false"] a[href="bonnie"]',
+			'#x-Autosuggest-item-12-1[role="option"][aria-selected="false"] a[href="brutus"]',
+			'#x-Autosuggest-item-12-2[role="option"][aria-selected="false"] a[href="elvis"]'
+		])
+	);
 
 	instance.destroy();
 });

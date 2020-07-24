@@ -125,6 +125,18 @@ If return value is function, it will be used as cleanup callback for when
 autosuggest instance is removed or option is rerendered. You can perform actions
 such as custom event handlers removal for option inside this callback.
 
+##### onFocus
+
+Type: `Function`  
+Default: `async (currentResults) => []`
+
+Callback to run when input element is focused. You can perform actions such as
+creating initial placeholders.
+
+It receives one argument, which is list of current results.
+
+Return value should be the same as for `onQueryInput` hook.
+
 ##### decorateInputEvent
 
 Type: `Function`  
@@ -150,7 +162,7 @@ This callback is useful for performing actions such as triggering form submit.
 ##### htmlClassNamespace
 
 Type: `string`  
-Default: ` `
+Default: ``
 
 HTML class namespace in addition to default one (`x-Autosuggest`).
 
@@ -186,6 +198,19 @@ const options = {
 	onQueryInput(query) {
 		return cachedFetch(`https://restcountries.eu/rest/v2/name/${query}`);
 		// …
+	}
+};
+```
+
+### How to display current results on input focus?
+
+You can use `onFocus` hook and return current results.
+
+```js
+// In autosuggest instance options…
+const options = {
+	async onFocus(results) {
+		return results;
 	}
 };
 ```

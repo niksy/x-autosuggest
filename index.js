@@ -6,7 +6,8 @@ export default (element, options = {}) => {
 		decorateOption = (node) => {},
 		decorateInputEvent = (listener) => listener,
 		onOptionSelect = (event, value, meta) => {},
-		onQueryInput = (query) => Promise.resolve([])
+		onQueryInput = (query) => Promise.resolve([]),
+		onFocus = (currentResults) => Promise.resolve([])
 	} = options;
 
 	const value = element.value;
@@ -22,7 +23,8 @@ export default (element, options = {}) => {
 			decorateOption,
 			decorateInputEvent,
 			onOptionSelect,
-			onQueryInput
+			onQueryInput,
+			onFocus
 		}
 	});
 	return {
