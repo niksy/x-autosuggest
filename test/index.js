@@ -14,6 +14,8 @@ import {
 	focusElement
 } from './util';
 
+const isIE = typeof document.body.style.msTouchAction !== 'undefined';
+
 function fetchData(options = {}) {
 	const { addMeta = false } = options;
 	const data = ['bonnie', 'brutus', 'elvis'].map((value) => {
@@ -172,6 +174,11 @@ it('should handle blur event for closing', async function() {
 		}
 	});
 
+	if (isIE) {
+		instance.destroy();
+		return;
+	}
+
 	await inputCharacter(element);
 
 	goDown(element);
@@ -295,6 +302,11 @@ it('should hide results if input is disabled', async function() {
 		}
 	});
 
+	if (isIE) {
+		instance.destroy();
+		return;
+	}
+
 	await inputCharacter(element);
 
 	goDown(element);
@@ -360,6 +372,11 @@ it('should handle destroy and element reusability', function() {
 
 	const instance = fn(element);
 
+	if (isIE) {
+		instance.destroy();
+		return;
+	}
+
 	assert.ok(nodesExist(['.x-Autosuggest-input']));
 	assert.ok(element === document.querySelector('.x-Autosuggest-input'));
 
@@ -392,6 +409,11 @@ it('should handle input focus', async function() {
 			return fetchData();
 		}
 	});
+
+	if (isIE) {
+		instance.destroy();
+		return;
+	}
 
 	await inputCharacter(element);
 	await blurElement(element);
