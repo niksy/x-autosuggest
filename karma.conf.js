@@ -11,12 +11,13 @@ const rollupConfig = require('./rollup.config');
 
 let config;
 
-const local = typeof process.env.CI === 'undefined' || process.env.CI === 'false';
-const port = 9001;
+const local =
+	typeof process.env.CI === 'undefined' || process.env.CI === 'false';
+const port = process.env.SERVICE_PORT;
 
-if ( local ) {
+if (local) {
 	config = {
-		browsers: ['Chrome'],
+		browsers: ['Chrome']
 	};
 } else {
 	config = {
@@ -57,21 +58,17 @@ if ( local ) {
 				project: 'x-autosuggest',
 				build: 'Automated (Karma)',
 				name: 'IE11'
-			},
+			}
 		},
 		browsers: ['BS-Chrome', 'BS-Firefox', 'BS-IE11']
 	};
 }
 
-module.exports = function ( baseConfig ) {
-
-	baseConfig.set(Object.assign({
+module.exports = function(baseConfig) {
+	baseConfig.set({
 		basePath: '',
 		frameworks: ['mocha', 'fixture'],
-		files: [
-			'test/**/*.html',
-			{ pattern: 'test/index.js', watched: false }
-		],
+		files: ['test/**/*.html', { pattern: 'test/index.js', watched: false }],
 		exclude: [],
 		preprocessors: {
 			'test/**/*.html': ['html2js'],
@@ -108,7 +105,9 @@ module.exports = function ( baseConfig ) {
 					configFile: path.resolve(__dirname, '.babelrc')
 				}),
 				globals(),
-				...rollupConfig.plugins.filter(({ name }) => !['babel'].includes(name)),
+				...rollupConfig.plugins.filter(
+					({ name }) => !['babel'].includes(name)
+				),
 				babel({
 					exclude: 'node_modules/**',
 					extensions: ['.js', '.svelte'],
@@ -142,7 +141,7 @@ module.exports = function ( baseConfig ) {
 			}
 		},
 		singleRun: true,
-		concurrency: Infinity
-	}, config));
-
+		concurrency: Infinity,
+		...config
+	});
 };
