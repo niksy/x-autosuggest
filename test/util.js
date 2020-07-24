@@ -49,12 +49,12 @@ function nodesExist(selectors) {
 
 async function blurElement(element) {
 	element.blur();
-	await nextFrame();
+	// This is to trigger IE 11 blur event
+	mouseClick(document.body);
 }
 
 async function focusElement(element) {
 	element.focus();
-	await nextFrame();
 }
 
 export {

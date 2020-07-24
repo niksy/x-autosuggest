@@ -14,8 +14,6 @@ import {
 	focusElement
 } from './util';
 
-const isIE = typeof document.body.style.msTouchAction !== 'undefined';
-
 function fetchData(options = {}) {
 	const { addMeta = false } = options;
 	const data = ['bonnie', 'brutus', 'elvis'].map((value) => {
@@ -174,16 +172,9 @@ it('should handle blur event for closing', async function() {
 		}
 	});
 
-	if (isIE) {
-		instance.destroy();
-		return;
-	}
-
 	await inputCharacter(element);
 
 	goDown(element);
-
-	await nextFrame();
 
 	assert.ok(nodesExist(['#x-Autosuggest-results-3[aria-expanded="true"]']));
 
@@ -302,11 +293,6 @@ it('should hide results if input is disabled', async function() {
 		}
 	});
 
-	if (isIE) {
-		instance.destroy();
-		return;
-	}
-
 	await inputCharacter(element);
 
 	goDown(element);
@@ -372,11 +358,6 @@ it('should handle destroy and element reusability', function() {
 
 	const instance = fn(element);
 
-	if (isIE) {
-		instance.destroy();
-		return;
-	}
-
 	assert.ok(nodesExist(['.x-Autosuggest-input']));
 	assert.ok(element === document.querySelector('.x-Autosuggest-input'));
 
@@ -410,13 +391,16 @@ it('should handle input focus', async function() {
 		}
 	});
 
-	if (isIE) {
-		instance.destroy();
-		return;
-	}
-
 	await inputCharacter(element);
+
+	goDown(element);
+
+	assert.ok(nodesExist(['#x-Autosuggest-results-12[aria-expanded="true"]']));
+
 	await blurElement(element);
+
+	assert.ok(nodesExist(['#x-Autosuggest-results-12[aria-expanded="false"]']));
+
 	await focusElement(element);
 
 	assert.ok(
